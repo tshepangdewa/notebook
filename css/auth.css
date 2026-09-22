@@ -1,0 +1,146 @@
+.welcome-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+.welcome-card {
+    width: 100%;
+    max-width: 520px;
+
+    background: var(--white);
+
+    border: 1px solid var(--secondary-color);
+    border-radius: 20px;
+
+    padding: 50px 40px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom: 40px;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-color);
+    color: white;
+
+    border-radius: 12px;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.brand h1 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.welcome-content h2 {
+    font-family: "Segoe Print", "Segoe Print Bold", cursive;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2;
+
+    margin-bottom: 16px;
+}
+
+.welcome-content p {
+    max-width: 400px;
+
+    margin: 0 auto 32px;
+
+    color: var(--muted-color);
+
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.btn {
+    width: 100%;
+
+    padding: 14px 20px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+
+    border: 1px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: #05684D;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary-color);
+
+    border: 1px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background: #F0F8F5;
+}
+
+@media (max-width: 600px) {
+
+    .welcome-page {
+        padding: 16px;
+    }
+
+    .welcome-card {
+        padding: 40px 24px;
+    }
+
+    .welcome-content h2 {
+        font-size: 27px;
+    }
+
+    .brand h1 {
+        font-size: 26px;
+    }
+}
