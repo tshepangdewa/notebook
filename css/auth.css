@@ -43,12 +43,18 @@
     justify-content: center;
 
     background: var(--primary-color);
-    color: white;
-
     border-radius: 12px;
 
-    font-size: 24px;
-    font-weight: 700;
+    overflow: hidden;
+}
+
+.brand-icon img {
+    width: 30px;
+    height: 30px;
+
+    object-fit: contain;
+
+    filter: brightness(0) invert(1);
 }
 
 .brand h1 {
