@@ -1,4 +1,4 @@
-.welcome-page {
+.auth-page {
     min-height: 100vh;
 
     display: flex;
@@ -8,7 +8,7 @@
     padding: 24px;
 }
 
-.welcome-card {
+.auth-card {
     width: 100%;
     max-width: 520px;
 
@@ -19,10 +19,15 @@
 
     padding: 50px 40px;
 
-    text-align: center;
-
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
+
+.hidden {
+    display: none;
+}
+
+
+/* Brand */
 
 .brand {
     display: flex;
@@ -43,6 +48,7 @@
     justify-content: center;
 
     background: var(--primary-color);
+
     border-radius: 12px;
 
     overflow: hidden;
@@ -62,8 +68,16 @@
     font-weight: 700;
 }
 
+
+/* Welcome */
+
+.welcome-content {
+    text-align: center;
+}
+
 .welcome-content h2 {
     font-family: "Segoe Print", "Segoe Print Bold", cursive;
+
     font-weight: 700;
     font-size: 32px;
     line-height: 1.2;
@@ -82,6 +96,9 @@
     line-height: 1.6;
 }
 
+
+/* Buttons */
+
 .auth-buttons {
     display: flex;
     flex-direction: column;
@@ -95,6 +112,8 @@
     padding: 14px 20px;
 
     border-radius: 10px;
+
+    font-family: "Geist", Arial, Helvetica, sans-serif;
 
     font-size: 16px;
     font-weight: 600;
@@ -132,13 +151,154 @@
     background: #F0F8F5;
 }
 
+
+/* Authentication forms */
+
+.auth-form-card {
+    position: relative;
+}
+
+.back-button {
+    border: none;
+    background: transparent;
+
+    color: var(--muted-color);
+
+    font-family: "Geist", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    margin-bottom: 32px;
+}
+
+.back-button:hover {
+    color: var(--primary-color);
+}
+
+.auth-header {
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    color: var(--muted-color);
+
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+
+/* Form */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--secondary-color);
+    border-radius: 9px;
+
+    background: white;
+
+    color: var(--text-color);
+
+    font-family: "Geist", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #9CA3AF;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 3px rgba(6, 122, 91, 0.10);
+}
+
+
+/* Messages */
+
+.form-message {
+    min-height: 20px;
+
+    margin-bottom: 12px;
+
+    color: #B42318;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* Switch between forms */
+
+.switch-auth {
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: var(--muted-color);
+
+    font-size: 14px;
+}
+
+.switch-auth button {
+    border: none;
+    background: transparent;
+
+    color: var(--primary-color);
+
+    font-family: "Geist", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.switch-auth button:hover {
+    text-decoration: underline;
+}
+
+
+/* Mobile */
+
 @media (max-width: 600px) {
 
-    .welcome-page {
+    .auth-page {
         padding: 16px;
     }
 
-    .welcome-card {
+    .auth-card {
         padding: 40px 24px;
     }
 
@@ -148,5 +308,9 @@
 
     .brand h1 {
         font-size: 26px;
+    }
+
+    .auth-header h2 {
+        font-size: 25px;
     }
 }

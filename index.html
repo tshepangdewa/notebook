@@ -6,30 +6,32 @@
 
     <title>Notebook</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
 </head>
 
 <body>
 
-    <main class="welcome-page">
+    <main class="auth-page">
 
-        <section class="welcome-card">
+        <!-- Welcome Screen -->
+        <section class="auth-card" id="welcome-screen">
 
             <div class="brand">
-    <div class="brand-icon">
-        <img src="assets/notebook-logo.svg" alt="Notebook logo">
-    </div>
+                <div class="brand-icon">
+                    <img src="assets/notebook-logo.svg" alt="Notebook logo">
+                </div>
 
-    <h1>Notebook</h1>
-</div>
+                <h1>Notebook</h1>
+            </div>
 
             <div class="welcome-content">
 
@@ -41,16 +43,212 @@
                 </p>
 
                 <div class="auth-buttons">
-                    <button id="signup-btn" class="btn btn-primary">
+
+                    <button
+                        type="button"
+                        id="signup-btn"
+                        class="btn btn-primary"
+                    >
                         Sign Up
                     </button>
 
-                    <button id="signin-btn" class="btn btn-secondary">
+                    <button
+                        type="button"
+                        id="signin-btn"
+                        class="btn btn-secondary"
+                    >
                         Sign In
                     </button>
+
                 </div>
 
             </div>
+
+        </section>
+
+
+        <!-- Sign Up -->
+        <section class="auth-card auth-form-card hidden" id="signup-screen">
+
+            <button
+                type="button"
+                class="back-button"
+                id="signup-back"
+            >
+                ← Back
+            </button>
+
+            <div class="auth-header">
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Start organizing your notes with Notebook.
+                </p>
+
+            </div>
+
+            <form id="signup-form">
+
+                <div class="form-group">
+
+                    <label for="signup-email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signup-email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="signup-password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signup-password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="signup-confirm-password">
+                        Confirm password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signup-confirm-password"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                </div>
+
+                <p
+                    class="form-message"
+                    id="signup-message"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="switch-auth">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    id="show-signin"
+                >
+                    Sign In
+                </button>
+
+            </p>
+
+        </section>
+
+
+        <!-- Sign In -->
+        <section class="auth-card auth-form-card hidden" id="signin-screen">
+
+            <button
+                type="button"
+                class="back-button"
+                id="signin-back"
+            >
+                ← Back
+            </button>
+
+            <div class="auth-header">
+
+                <h2>Welcome back</h2>
+
+                <p>
+                    Sign in to continue to your notes.
+                </p>
+
+            </div>
+
+            <form id="signin-form">
+
+                <div class="form-group">
+
+                    <label for="signin-email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signin-email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="signin-password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signin-password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+                <p
+                    class="form-message"
+                    id="signin-message"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Sign In
+                </button>
+
+            </form>
+
+            <p class="switch-auth">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    id="show-signup"
+                >
+                    Sign Up
+                </button>
+
+            </p>
 
         </section>
 
