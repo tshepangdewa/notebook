@@ -2,7 +2,9 @@
 
 // Global State
 let isCreatePinned = false;
-let currentNotes = []; // Stores loaded notes locally
+let currentNotes = []; 
+let currentlyEditingNoteId = null;
+let modalIsPinned = false;
 
 // Initialize Dashboard
 async function initDashboard() {
@@ -19,9 +21,10 @@ async function initDashboard() {
         userEmailElement.textContent = session.user.email;
     }
 
-    // Attach form and control listeners
+    // Attach form, modal, and control listeners
     setupCreateFormListeners();
     setupSortListener();
+    setupModalListeners();
 
     // Initial Fetch of Notes
     await fetchAndRenderNotes();
@@ -36,7 +39,6 @@ async function fetchAndRenderNotes() {
 
     let query = window.supabaseClient.from("notes").select("*");
 
-    // Apply Sorting based on UI selection
     switch (sortValue) {
         case "created_desc":
             query = query.order("created_at", { ascending: false });
@@ -75,7 +77,6 @@ function renderNotesGrid(notes) {
     const othersTitle = document.getElementById("others-title");
     const emptyState = document.getElementById("empty-state");
 
-    // Clear grids
     pinnedGrid.innerHTML = "";
     othersGrid.innerHTML = "";
 
@@ -88,11 +89,9 @@ function renderNotesGrid(notes) {
 
     emptyState.classList.add("hidden");
 
-    // Separate notes into Pinned and Unpinned
     const pinnedNotes = notes.filter(n => n.is_pinned);
     const otherNotes = notes.filter(n => !n.is_pinned);
 
-    // Render Pinned Section
     if (pinnedNotes.length > 0) {
         pinnedSection.classList.remove("hidden");
         pinnedNotes.forEach(note => {
@@ -102,11 +101,8 @@ function renderNotesGrid(notes) {
         pinnedSection.classList.add("hidden");
     }
 
-    // Render Others Section
     if (otherNotes.length > 0) {
         othersSection.classList.remove("hidden");
-        
-        // Show "OTHERS" section header only if there are also pinned notes
         if (pinnedNotes.length > 0) {
             othersTitle.classList.remove("hidden");
         } else {
@@ -121,9 +117,7 @@ function renderNotesGrid(notes) {
     }
 }
 
-// --------------------------------------------------------------------------
 // Helper: Build DOM Node for Single Note Card
-// --------------------------------------------------------------------------
 function createNoteCardElement(note) {
     const card = document.createElement("div");
     card.className = `note-card color-${note.color || 'default'}`;
@@ -138,17 +132,13 @@ function createNoteCardElement(note) {
         ${contentText ? `<div class="note-content">${contentText}</div>` : ''}
     `;
 
-    // Click card to open edit modal (Step 12 hook)
     card.addEventListener("click", () => {
-        if (typeof openEditModal === "function") {
-            openEditModal(note);
-        }
+        openEditModal(note);
     });
 
     return card;
 }
 
-// HTML Escape Helper to prevent XSS
 function escapeHtml(str) {
     return str
         .replace(/&/g, "&amp;")
@@ -253,6 +243,137 @@ function collapseCreateForm() {
     if (createTitle) createTitle.classList.add("hidden");
     if (createActions) createActions.classList.add("hidden");
     if (createContent) createContent.rows = 1;
+}
+
+// --------------------------------------------------------------------------
+// Modal Edit & Delete Handlers
+// --------------------------------------------------------------------------
+function setupModalListeners() {
+    const modalOverlay = document.getElementById("edit-modal");
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const modalDeleteBtn = document.getElementById("modal-delete-btn");
+    const modalPinBtn = document.getElementById("modal-pin-btn");
+
+    // Close button event
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener("click", async () => {
+            await saveAndCloseModal();
+        });
+    }
+
+    // Click backdrop overlay to save & close
+    if (modalOverlay) {
+        modalOverlay.addEventListener("click", async (e) => {
+            if (e.target === modalOverlay) {
+                await saveAndCloseModal();
+            }
+        });
+    }
+
+    // Toggle Pin status in Modal
+    if (modalPinBtn) {
+        modalPinBtn.addEventListener("click", () => {
+            modalIsPinned = !modalIsPinned;
+            updateModalPinBtnState();
+        });
+    }
+
+    // Delete Note event
+    if (modalDeleteBtn) {
+        modalDeleteBtn.addEventListener("click", async () => {
+            if (!currentlyEditingNoteId) return;
+
+            const confirmDelete = confirm("Are you sure you want to delete this note?");
+            if (!confirmDelete) return;
+
+            const { error } = await window.supabaseClient
+                .from("notes")
+                .delete()
+                .eq("id", currentlyEditingNoteId);
+
+            if (error) {
+                alert("Error deleting note: " + error.message);
+                return;
+            }
+
+            closeModal();
+            await fetchAndRenderNotes();
+        });
+    }
+}
+
+// Open modal and populate fields
+function openEditModal(note) {
+    currentlyEditingNoteId = note.id;
+    modalIsPinned = note.is_pinned;
+
+    document.getElementById("modal-title").value = note.title || "";
+    document.getElementById("modal-content").value = note.content || "";
+
+    updateModalPinBtnState();
+
+    // Show AI summary if available (prepping for Step 19)
+    const aiSection = document.getElementById("modal-ai-section");
+    const aiText = document.getElementById("ai-summary-text");
+    if (note.summary) {
+        aiText.textContent = note.summary;
+        aiSection.classList.remove("hidden");
+    } else {
+        aiSection.classList.add("hidden");
+        aiText.textContent = "";
+    }
+
+    document.getElementById("edit-modal").classList.remove("hidden");
+}
+
+// Save changes to Supabase and close modal
+async function saveAndCloseModal() {
+    if (!currentlyEditingNoteId) {
+        closeModal();
+        return;
+    }
+
+    const title = document.getElementById("modal-title").value.trim();
+    const content = document.getElementById("modal-content").value.trim();
+
+    // Send Update request to Supabase
+    const { error } = await window.supabaseClient
+        .from("notes")
+        .update({
+            title: title,
+            content: content,
+            is_pinned: modalIsPinned,
+            updated_at: new Date().toISOString()
+        })
+        .eq("id", currentlyEditingNoteId);
+
+    if (error) {
+        alert("Error updating note: " + error.message);
+        return;
+    }
+
+    closeModal();
+    await fetchAndRenderNotes();
+}
+
+function closeModal() {
+    currentlyEditingNoteId = null;
+    document.getElementById("edit-modal").classList.add("hidden");
+}
+
+function updateModalPinBtnState() {
+    const modalPinBtn = document.getElementById("modal-pin-btn");
+    if (!modalPinBtn) return;
+
+    if (modalIsPinned) {
+        modalPinBtn.classList.remove("btn-primary");
+        modalPinBtn.classList.add("btn-secondary");
+        modalPinBtn.textContent = "Pinned";
+    } else {
+        modalPinBtn.classList.remove("btn-secondary");
+        modalPinBtn.classList.add("btn-primary");
+        modalPinBtn.textContent = "Pin";
+    }
 }
 
 // --------------------------------------------------------------------------
