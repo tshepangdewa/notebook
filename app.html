@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Notebook</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="brand-icon small">
+                <img src="assets/notebook-logo.svg" alt="Notebook logo">
+            </div>
+            <h1 class="app-title">Notebook</h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="header-search">
+            <input type="text" id="search-input" placeholder="Search notes..." autocomplete="off">
+        </div>
+
+        <!-- Right Header Actions -->
+        <div class="header-right">
+            <div class="sort-wrapper">
+                <select id="sort-select" title="Sort Notes">
+                    <option value="updated_desc">Recently Updated</option>
+                    <option value="created_desc">Newest First</option>
+                    <option value="created_asc">Oldest First</option>
+                    <option value="title_asc">Title (A-Z)</option>
+                </select>
+            </div>
+            <span id="user-email" class="user-email"></span>
+            <button id="signout-btn" class="btn btn-secondary btn-sm" type="button">
+                Sign Out
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="app-container">
+
+        <!-- Google Keep-style Quick Create Bar -->
+        <section class="create-note-wrapper">
+            <form id="create-note-form" class="create-note-card color-default">
+                <input 
+                    type="text" 
+                    id="create-title" 
+                    class="create-title hidden" 
+                    placeholder="Title" 
+                    autocomplete="off"
+                >
+                <textarea 
+                    id="create-content" 
+                    class="create-content" 
+                    placeholder="Take a note..." 
+                    rows="1"
+                ></textarea>
+
+                <div id="create-actions" class="create-actions hidden">
+                    <div class="create-options">
+                        <button type="button" id="create-pin-btn" class="btn btn-primary btn-sm">
+                            Pin
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Done</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Notes Feed -->
+        <section class="notes-feed">
+            <!-- Pinned Group -->
+            <div id="pinned-section" class="notes-group hidden">
+                <h2 class="group-title">PINNED</h2>
+                <div id="pinned-grid" class="notes-grid"></div>
+            </div>
+
+            <!-- Others Group -->
+            <div id="others-section" class="notes-group">
+                <h2 id="others-title" class="group-title hidden">OTHERS</h2>
+                <div id="others-grid" class="notes-grid"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state hidden">
+                <p>No notes found. Create your first note above!</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Note Edit Modal -->
+    <div id="edit-modal" class="modal-overlay hidden">
+        <div class="modal-card color-default" id="modal-card">
+            <div class="modal-header">
+                <input type="text" id="modal-title" placeholder="Title" class="modal-title-input">
+                <button type="button" id="modal-pin-btn" class="btn btn-primary btn-sm">Pin</button>
+            </div>
+            <textarea id="modal-content" placeholder="Note..." class="modal-content-input" rows="6"></textarea>
+
+            <!-- AI Summary Drawer -->
+            <div id="modal-ai-section" class="modal-ai-section hidden">
+                <div class="ai-header">
+                    <span class="ai-badge">AI Summary</span>
+                    <button type="button" id="re-summarize-btn" class="btn-text-tool">Regenerate</button>
+                </div>
+                <div id="ai-summary-text" class="ai-summary-text"></div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-tools">
+                    <button type="button" id="modal-ai-btn" class="btn-secondary btn-sm">Summarize with AI</button>
+                    <button type="button" id="modal-delete-btn" class="btn-danger-text">Delete</button>
+                </div>
+                <button type="button" id="modal-close-btn" class="btn btn-primary btn-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
