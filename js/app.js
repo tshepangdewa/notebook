@@ -24,6 +24,7 @@ async function initDashboard() {
     // Attach form, modal, and control listeners
     setupCreateFormListeners();
     setupSortListener();
+    setupSearchListener();
     setupModalListeners();
 
     // Initial Fetch of Notes
@@ -63,7 +64,39 @@ async function fetchAndRenderNotes() {
     }
 
     currentNotes = notes || [];
-    renderNotesGrid(currentNotes);
+    
+    // Apply search filter if query exists, else render all
+    applySearchAndRender();
+}
+
+// --------------------------------------------------------------------------
+// Search & Filter Logic
+// --------------------------------------------------------------------------
+function setupSearchListener() {
+    const searchInput = document.getElementById("search-input");
+    if (!searchInput) return;
+
+    searchInput.addEventListener("input", () => {
+        applySearchAndRender();
+    });
+}
+
+function applySearchAndRender() {
+    const searchInput = document.getElementById("search-input");
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    if (!query) {
+        renderNotesGrid(currentNotes);
+        return;
+    }
+
+    const filtered = currentNotes.filter(note => {
+        const titleMatch = note.title && note.title.toLowerCase().includes(query);
+        const contentMatch = note.content && note.content.toLowerCase().includes(query);
+        return titleMatch || contentMatch;
+    });
+
+    renderNotesGrid(filtered);
 }
 
 // --------------------------------------------------------------------------
@@ -254,14 +287,12 @@ function setupModalListeners() {
     const modalDeleteBtn = document.getElementById("modal-delete-btn");
     const modalPinBtn = document.getElementById("modal-pin-btn");
 
-    // Close button event
     if (modalCloseBtn) {
         modalCloseBtn.addEventListener("click", async () => {
             await saveAndCloseModal();
         });
     }
 
-    // Click backdrop overlay to save & close
     if (modalOverlay) {
         modalOverlay.addEventListener("click", async (e) => {
             if (e.target === modalOverlay) {
@@ -270,7 +301,6 @@ function setupModalListeners() {
         });
     }
 
-    // Toggle Pin status in Modal
     if (modalPinBtn) {
         modalPinBtn.addEventListener("click", () => {
             modalIsPinned = !modalIsPinned;
@@ -278,7 +308,6 @@ function setupModalListeners() {
         });
     }
 
-    // Delete Note event
     if (modalDeleteBtn) {
         modalDeleteBtn.addEventListener("click", async () => {
             if (!currentlyEditingNoteId) return;
@@ -302,7 +331,6 @@ function setupModalListeners() {
     }
 }
 
-// Open modal and populate fields
 function openEditModal(note) {
     currentlyEditingNoteId = note.id;
     modalIsPinned = note.is_pinned;
@@ -312,7 +340,6 @@ function openEditModal(note) {
 
     updateModalPinBtnState();
 
-    // Show AI summary if available (prepping for Step 19)
     const aiSection = document.getElementById("modal-ai-section");
     const aiText = document.getElementById("ai-summary-text");
     if (note.summary) {
@@ -326,7 +353,6 @@ function openEditModal(note) {
     document.getElementById("edit-modal").classList.remove("hidden");
 }
 
-// Save changes to Supabase and close modal
 async function saveAndCloseModal() {
     if (!currentlyEditingNoteId) {
         closeModal();
@@ -336,7 +362,6 @@ async function saveAndCloseModal() {
     const title = document.getElementById("modal-title").value.trim();
     const content = document.getElementById("modal-content").value.trim();
 
-    // Send Update request to Supabase
     const { error } = await window.supabaseClient
         .from("notes")
         .update({
