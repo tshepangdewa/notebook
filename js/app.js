@@ -15,19 +15,16 @@ async function initDashboard() {
         return;
     }
 
-    // Set user email display
     const userEmailElement = document.getElementById("user-email");
     if (userEmailElement) {
         userEmailElement.textContent = session.user.email;
     }
 
-    // Attach form, modal, and control listeners
     setupCreateFormListeners();
     setupSortListener();
     setupSearchListener();
     setupModalListeners();
 
-    // Initial Fetch of Notes
     await fetchAndRenderNotes();
 }
 
@@ -64,8 +61,6 @@ async function fetchAndRenderNotes() {
     }
 
     currentNotes = notes || [];
-    
-    // Apply search filter if query exists, else render all
     applySearchAndRender();
 }
 
@@ -100,7 +95,7 @@ function applySearchAndRender() {
 }
 
 // --------------------------------------------------------------------------
-// Render Notes Grid (Pinned vs Others)
+// Render Notes Grid
 // --------------------------------------------------------------------------
 function renderNotesGrid(notes) {
     const pinnedSection = document.getElementById("pinned-section");
@@ -150,19 +145,20 @@ function renderNotesGrid(notes) {
     }
 }
 
-// Helper: Build DOM Node for Single Note Card
 function createNoteCardElement(note) {
     const card = document.createElement("div");
-    card.className = `note-card color-${note.color || 'default'}`;
+    card.className = "note-card color-default";
     card.dataset.id = note.id;
 
     const titleText = note.title ? escapeHtml(note.title) : "";
     const contentText = note.content ? escapeHtml(note.content) : "";
+    const summaryText = note.summary ? escapeHtml(note.summary) : "";
 
     card.innerHTML = `
         ${note.is_pinned ? '<span class="note-pin-badge">Pinned</span>' : ''}
         ${titleText ? `<div class="note-title">${titleText}</div>` : ''}
         ${contentText ? `<div class="note-content">${contentText}</div>` : ''}
+        ${summaryText ? `<div class="note-summary-badge">Summary: ${summaryText}</div>` : ''}
     `;
 
     card.addEventListener("click", () => {
