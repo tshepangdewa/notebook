@@ -45,7 +45,7 @@ authSwitchButton.addEventListener("click", () => {
     } else {
 
         authTitle.textContent =
-            "Welcome back";
+    "Your notes, understood by AI";
 
         authSubtitle.textContent =
             "Sign in to access your notes.";
