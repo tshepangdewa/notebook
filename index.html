@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notebook</title>
+
+    <!-- Geist Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         AUTHENTICATION PAGE
+    ========================== -->
+
+    <main class="auth-page" id="authPage">
+
+        <section class="auth-card">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    N
+                </div>
+
+                <span class="brand-name">
+                    Notebook
+                </span>
+
+            </div>
+
+
+            <div class="auth-header">
+
+                <h1 id="authTitle">
+                    Welcome back
+                </h1>
+
+                <p id="authSubtitle">
+                    Sign in to access your notes.
+                </p>
+
+            </div>
+
+
+            <form id="authForm">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Sign in
+                </button>
+
+            </form>
+
+
+            <p class="auth-switch">
+
+                <span id="authSwitchText">
+                    Don't have an account?
+                </span>
+
+                <button
+                    type="button"
+                    id="authSwitchButton"
+                    class="text-button"
+                >
+                    Sign up
+                </button>
+
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         NOTES PAGE
+    ========================== -->
+
+    <main
+        class="notes-page hidden"
+        id="notesPage"
+    >
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    N
+                </div>
+
+                <span class="brand-name">
+                    Notebook
+                </span>
+
+            </div>
+
+
+            <button
+                class="icon-button"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </header>
+
+
+        <section class="notes-content">
+
+            <div class="notes-heading">
+
+                <h1>
+                    Your Notes
+                </h1>
+
+                <p>
+                    Capture your thoughts and let AI make sense of them.
+                </p>
+
+            </div>
+
+
+            <div class="search-wrapper">
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search your notes..."
+                >
+
+            </div>
+
+
+            <div
+                class="notes-grid"
+                id="notesGrid"
+            >
+                <!-- Notes will be rendered here later -->
+            </div>
+
+        </section>
+
+
+        <button
+            class="add-note-button"
+            id="addNoteButton"
+        >
+            +
+        </button>
+
+    </main>
+
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
