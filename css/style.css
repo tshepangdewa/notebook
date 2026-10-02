@@ -580,9 +580,17 @@ body {
 }
 
 
+/* =========================
+   NOTE CARD
+========================= */
+
 .note-card {
 
     min-height: 160px;
+
+    display: flex;
+
+    flex-direction: column;
 
     padding: 18px;
 
@@ -594,6 +602,121 @@ body {
 
     box-shadow:
         0 2px 8px rgba(31, 41, 55, 0.05);
+
+}
+
+
+.note-card.pinned {
+
+    border-color: var(--primary-color);
+
+}
+
+
+.note-card h3 {
+
+    color: var(--text-color);
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+}
+
+
+.note-card > p {
+
+    margin-top: 10px;
+
+    color: var(--muted-color);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================
+   NOTE ACTIONS
+========================= */
+
+.note-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: auto;
+
+    padding-top: 18px;
+
+}
+
+
+.note-action-button {
+
+    padding: 7px 10px;
+
+    border: 1px solid var(--secondary-color);
+
+    border-radius: 7px;
+
+    background: var(--white);
+
+    color: var(--text-color);
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+}
+
+
+.note-action-button:hover {
+
+    background: var(--background-color);
+
+}
+
+
+.note-action-button.delete {
+
+    color: #B42318;
+
+}
+
+
+/* =========================
+   NOTES STATUS
+========================= */
+
+.notes-status {
+
+    grid-column: 1 / -1;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: var(--muted-color);
+
+    font-size: 14px;
+
+}
+
+
+.notes-status.error {
+
+    color: #B42318;
 
 }
 
@@ -645,6 +768,15 @@ body {
     background: #056A50;
 
     transform: translateY(-2px);
+
+}
+
+
+.add-note-button:disabled {
+
+    opacity: 0.7;
+
+    cursor: not-allowed;
 
 }
 
