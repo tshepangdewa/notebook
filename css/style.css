@@ -603,6 +603,23 @@ body {
     box-shadow:
         0 2px 8px rgba(31, 41, 55, 0.05);
 
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+
+}
+
+
+.note-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 16px rgba(31, 41, 55, 0.08);
+
 }
 
 
@@ -639,6 +656,14 @@ body {
     white-space: pre-wrap;
 
     word-break: break-word;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 5;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
 
 }
 
@@ -782,6 +807,338 @@ body {
 
 
 /* =========================
+   NOTE EDITOR OVERLAY
+========================= */
+
+.editor-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(31, 41, 55, 0.35);
+
+    backdrop-filter: blur(3px);
+
+}
+
+
+/* =========================
+   NOTE EDITOR
+========================= */
+
+.note-editor {
+
+    width: min(720px, 100%);
+
+    height: min(680px, calc(100vh - 48px));
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: var(--white);
+
+    border: 1px solid var(--secondary-color);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 50px rgba(31, 41, 55, 0.18);
+
+}
+
+
+/* =========================
+   EDITOR HEADER
+========================= */
+
+.editor-header {
+
+    min-height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 14px;
+
+    border-bottom: 1px solid var(--secondary-color);
+
+}
+
+
+.editor-close-button {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--text-color);
+
+    font-family: inherit;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+}
+
+
+.editor-close-button:hover {
+
+    background: var(--background-color);
+
+}
+
+
+.editor-status {
+
+    flex: 1;
+
+    color: var(--muted-color);
+
+    font-size: 13px;
+
+}
+
+
+.editor-action-button {
+
+    padding: 8px 13px;
+
+    border: 1px solid var(--secondary-color);
+
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--text-color);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+
+
+.editor-action-button:hover {
+
+    background: var(--background-color);
+
+}
+
+
+.editor-action-button.active {
+
+    border-color: var(--primary-color);
+
+    background: rgba(6, 122, 91, 0.08);
+
+    color: var(--primary-color);
+
+}
+
+
+/* =========================
+   EDITOR BODY
+========================= */
+
+.editor-body {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 0;
+
+    padding: 24px;
+
+}
+
+
+.editor-title {
+
+    width: 100%;
+
+    padding: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-color);
+
+    font-family: inherit;
+
+    font-size: 26px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+
+}
+
+
+.editor-title::placeholder {
+
+    color: var(--muted-color);
+
+}
+
+
+.editor-content {
+
+    flex: 1;
+
+    width: 100%;
+
+    min-height: 0;
+
+    margin-top: 18px;
+
+    resize: none;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-color);
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+}
+
+
+.editor-content::placeholder {
+
+    color: var(--muted-color);
+
+}
+
+
+/* =========================
+   EDITOR FOOTER
+========================= */
+
+.editor-footer {
+
+    min-height: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 10px 18px;
+
+    border-top: 1px solid var(--secondary-color);
+
+}
+
+
+.editor-delete-button {
+
+    padding: 9px 13px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #B42318;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+}
+
+
+.editor-delete-button:hover {
+
+    background: rgba(180, 35, 24, 0.06);
+
+}
+
+
+.editor-done-button {
+
+    padding: 9px 16px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--primary-color);
+
+    color: var(--white);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.editor-done-button:hover {
+
+    background: #056A50;
+
+}
+
+
+/* =========================
    MOBILE
 ========================= */
 
@@ -828,6 +1185,47 @@ body {
         right: 20px;
 
         bottom: 20px;
+
+    }
+
+
+    .editor-overlay {
+
+        padding: 0;
+
+    }
+
+
+    .note-editor {
+
+        width: 100%;
+
+        height: 100%;
+
+        border-radius: 0;
+
+        border: none;
+
+    }
+
+
+    .editor-body {
+
+        padding: 22px 18px;
+
+    }
+
+
+    .editor-title {
+
+        font-size: 24px;
+
+    }
+
+
+    .editor-content {
+
+        font-size: 15px;
 
     }
 

@@ -4,12 +4,18 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Notebook</title>
 
 
-    <!-- Geist + Caveat -->
+    <!-- =========================
+         GOOGLE FONTS
+    ========================== -->
 
     <link
         rel="preconnect"
@@ -28,7 +34,9 @@
     >
 
 
-    <!-- Main stylesheet -->
+    <!-- =========================
+         MAIN STYLESHEET
+    ========================== -->
 
     <link
         rel="stylesheet"
@@ -201,6 +209,7 @@
 
 
             <button
+                type="button"
                 class="icon-button"
                 id="logoutButton"
             >
@@ -210,7 +219,9 @@
         </header>
 
 
-        <!-- NOTES CONTENT -->
+        <!-- =========================
+             NOTES CONTENT
+        ========================== -->
 
         <section class="notes-content">
 
@@ -247,24 +258,140 @@
                 class="notes-grid"
                 id="notesGrid"
             >
-                <!-- Notes will be rendered here later -->
+
+                <!-- Notes will be rendered here -->
+
             </div>
 
 
         </section>
 
 
-        <!-- ADD NOTE -->
+        <!-- =========================
+             ADD NOTE BUTTON
+        ========================== -->
 
         <button
+            type="button"
             class="add-note-button"
             id="addNoteButton"
+            aria-label="Create a new note"
         >
             +
         </button>
 
 
     </main>
+
+
+    <!-- =========================
+         NOTE EDITOR
+    ========================== -->
+
+    <div
+        class="editor-overlay hidden"
+        id="editorOverlay"
+    >
+
+        <section
+            class="note-editor"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="editorTitleInput"
+        >
+
+
+            <!-- EDITOR HEADER -->
+
+            <div class="editor-header">
+
+
+                <button
+                    type="button"
+                    class="editor-close-button"
+                    id="closeEditorButton"
+                    aria-label="Close note"
+                >
+                    ×
+                </button>
+
+
+                <div class="editor-status">
+                    <span id="editorStatus">
+                        Saved
+                    </span>
+                </div>
+
+
+                <button
+                    type="button"
+                    class="editor-action-button"
+                    id="editorPinButton"
+                >
+                    Pin
+                </button>
+
+            </div>
+
+
+            <!-- EDITOR BODY -->
+
+            <div class="editor-body">
+
+
+                <!-- TITLE -->
+
+                <input
+                    type="text"
+                    id="editorTitleInput"
+                    class="editor-title"
+                    placeholder="Title"
+                    maxlength="200"
+                    autocomplete="off"
+                >
+
+
+                <!-- CONTENT -->
+
+                <textarea
+                    id="editorContentInput"
+                    class="editor-content"
+                    placeholder="Start writing..."
+                ></textarea>
+
+
+            </div>
+
+
+            <!-- EDITOR FOOTER -->
+
+            <div class="editor-footer">
+
+
+                <button
+                    type="button"
+                    class="editor-delete-button"
+                    id="editorDeleteButton"
+                >
+                    Delete
+                </button>
+
+
+                <button
+                    type="button"
+                    class="editor-done-button"
+                    id="editorDoneButton"
+                >
+                    Done
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+    </div>
 
 
     <!-- =========================
