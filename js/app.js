@@ -73,6 +73,9 @@ const aiSummaryMessage =
 const aiCopyButton =
     document.getElementById("aiCopyButton");
 
+const aiUseButton =
+    document.getElementById("aiUseButton");
+
 
 /* =========================
    APPLICATION STATE
@@ -972,6 +975,8 @@ function clearAISummary() {
 
     aiCopyButton.textContent = "Copy summary";
 
+    aiUseButton.disabled = false;
+
     isSummarizing = false;
 }
 
@@ -1101,6 +1106,48 @@ async function copyAISummary() {
 }
 
 
+/* =========================
+   USE AI SUMMARY IN NOTE
+========================= */
+
+function useAISummaryInNote() {
+
+    if (!currentNote) {
+        return;
+    }
+
+    const summary =
+        aiSummaryText.textContent.trim();
+
+    if (!summary) {
+        return;
+    }
+
+    editorContentInput.value = summary;
+
+    currentNote.content = summary;
+
+    editRevision += 1;
+    isEditorDirty = true;
+
+    clearAISummary();
+
+    setEditorStatus("Unsaved changes");
+
+    clearTimeout(saveTimer);
+
+    saveTimer = setTimeout(() => {
+        saveCurrentNote();
+    }, 700);
+
+    editorContentInput.focus();
+}
+
+
+/* =========================
+   AI EVENT LISTENERS
+========================= */
+
 summarizeButton.addEventListener(
     "click",
     summarizeCurrentNote
@@ -1109,6 +1156,11 @@ summarizeButton.addEventListener(
 aiCopyButton.addEventListener(
     "click",
     copyAISummary
+);
+
+aiUseButton.addEventListener(
+    "click",
+    useAISummaryInNote
 );
 
 
