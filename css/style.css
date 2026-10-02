@@ -151,40 +151,36 @@ body {
    AUTH HEADER
 ========================= */
 
+/* =========================
+   AUTH HEADER
+========================= */
+
 .auth-header {
-
-    margin-top: 38px;
-
+    margin-top: 12px;
     margin-bottom: 28px;
+    text-align: center;
 }
-
 
 .auth-header h1 {
-
     color: var(--text-color);
-
-    font-size: 30px;
-
-    font-weight: 600;
-
-    line-height: 1.2;
-
-    letter-spacing: -0.5px;
+    margin-bottom: 4px;
 }
 
+.auth-header h1.ai-heading {
+    font-family: "Caveat", cursive;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+}
 
 .auth-header p {
-
     margin-top: 8px;
-
     color: var(--muted-color);
-
     font-size: 14px;
-
     line-height: 1.5;
 }
-
-
 /* =========================
    FORM
 ========================= */
@@ -592,12 +588,4 @@ body {
         bottom: 20px;
     }
 
-}
-
-.ai-heading {
-    font-family: "Caveat", cursive;
-    font-size: 40px;
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: 0;
 }
