@@ -1,70 +1,57 @@
-const authPage =
-    document.getElementById("authPage");
+/* =========================
+   DOM ELEMENTS
+========================= */
 
-const notesPage =
-    document.getElementById("notesPage");
+const authPage = document.getElementById("authPage");
+const notesPage = document.getElementById("notesPage");
 
-const authForm =
-    document.getElementById("authForm");
+const authForm = document.getElementById("authForm");
+const authTitle = document.getElementById("authTitle");
+const authSubtitle = document.getElementById("authSubtitle");
 
-const authTitle =
-    document.getElementById("authTitle");
+const authSwitchText = document.getElementById("authSwitchText");
+const authSwitchButton = document.getElementById("authSwitchButton");
 
-const authSubtitle =
-    document.getElementById("authSubtitle");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 
-const authSwitchText =
-    document.getElementById("authSwitchText");
+const logoutButton = document.getElementById("logoutButton");
+const homeButton = document.getElementById("homeButton");
 
-const authSwitchButton =
-    document.getElementById("authSwitchButton");
+const searchInput = document.getElementById("searchInput");
+const addNoteButton = document.getElementById("addNoteButton");
+const emptyStateCreateButton = document.getElementById("emptyStateCreateButton");
 
-const logoutButton =
-    document.getElementById("logoutButton");
+const noteCount = document.getElementById("noteCount");
 
-const emailInput =
-    document.getElementById("email");
+const emptyState = document.getElementById("emptyState");
+const emptyStateTitle = document.getElementById("emptyStateTitle");
+const emptyStateDescription = document.getElementById("emptyStateDescription");
 
-const passwordInput =
-    document.getElementById("password");
+const pinnedSection = document.getElementById("pinnedSection");
+const pinnedGrid = document.getElementById("pinnedGrid");
+const pinnedCount = document.getElementById("pinnedCount");
 
-const notesGrid =
-    document.getElementById("notesGrid");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const addNoteButton =
-    document.getElementById("addNoteButton");
+const otherNotesSection = document.getElementById("otherNotesSection");
+const otherNotesHeading = document.getElementById("otherNotesHeading");
+const otherNotesCount = document.getElementById("otherNotesCount");
+const notesGrid = document.getElementById("notesGrid");
 
 
 /* =========================
    EDITOR ELEMENTS
 ========================= */
 
-const editorOverlay =
-    document.getElementById("editorOverlay");
+const editorOverlay = document.getElementById("editorOverlay");
+const closeEditorButton = document.getElementById("closeEditorButton");
+const editorStatus = document.getElementById("editorStatus");
 
-const closeEditorButton =
-    document.getElementById("closeEditorButton");
+const editorPinButton = document.getElementById("editorPinButton");
+const editorTitleInput = document.getElementById("editorTitleInput");
+const editorContentInput = document.getElementById("editorContentInput");
 
-const editorStatus =
-    document.getElementById("editorStatus");
-
-const editorPinButton =
-    document.getElementById("editorPinButton");
-
-const editorTitleInput =
-    document.getElementById("editorTitleInput");
-
-const editorContentInput =
-    document.getElementById("editorContentInput");
-
-const editorDeleteButton =
-    document.getElementById("editorDeleteButton");
-
-const editorDoneButton =
-    document.getElementById("editorDoneButton");
+const editorDeleteButton = document.getElementById("editorDeleteButton");
+const editorDoneButton = document.getElementById("editorDoneButton");
 
 
 /* =========================
@@ -74,327 +61,214 @@ const editorDoneButton =
 let isSignUpMode = false;
 
 let notes = [];
-
 let currentNote = null;
 
 let saveTimer = null;
-
-let isSaving = false;
+let savePromise = null;
 
 let isEditorDirty = false;
+let editRevision = 0;
+
+let isCreatingNote = false;
+let isDeletingNote = false;
+let isClosingEditor = false;
 
 
 /* =========================
-   AUTH MODE
+   AUTHENTICATION MODE
 ========================= */
 
-authSwitchButton.addEventListener(
-    "click",
-    () => {
+authSwitchButton.addEventListener("click", () => {
 
-        isSignUpMode =
-            !isSignUpMode;
+    isSignUpMode = !isSignUpMode;
 
-        clearAuthMessage();
+    clearAuthMessage();
 
+    if (isSignUpMode) {
 
-        if (isSignUpMode) {
+        authTitle.textContent = "Create your account";
 
-            authTitle.textContent =
-                "Create your account";
+        authSubtitle.textContent =
+            "Create an account to start keeping your notes.";
 
-            authSubtitle.textContent =
-                "Create an account to start keeping your notes.";
+        authSwitchText.textContent =
+            "Already have an account?";
 
-            authSwitchText.textContent =
-                "Already have an account?";
+        authSwitchButton.textContent = "Sign in";
 
-            authSwitchButton.textContent =
-                "Sign in";
+    } else {
 
-            authForm
-                .querySelector(".primary-button")
-                .textContent =
-                    "Sign up";
+        authTitle.textContent =
+            "Your notes, understood by AI";
 
-        } else {
+        authSubtitle.textContent =
+            "Sign in to access your notes.";
 
-            authTitle.textContent =
-                "Your notes, understood by AI";
+        authSwitchText.textContent =
+            "Don't have an account?";
 
-            authSubtitle.textContent =
-                "Sign in to access your notes.";
-
-            authSwitchText.textContent =
-                "Don't have an account?";
-
-            authSwitchButton.textContent =
-                "Sign up";
-
-            authForm
-                .querySelector(".primary-button")
-                .textContent =
-                    "Sign in";
-        }
-
-
-        passwordInput.value = "";
+        authSwitchButton.textContent = "Sign up";
     }
-);
+
+    authForm.querySelector(".primary-button").textContent =
+        isSignUpMode ? "Sign up" : "Sign in";
+
+    passwordInput.value = "";
+});
 
 
 /* =========================
-   AUTH MESSAGE
+   AUTHENTICATION MESSAGES
 ========================= */
 
-function showAuthMessage(
-    message,
-    type = "error"
-) {
+function showAuthMessage(message, type = "error") {
 
-    const messageElement =
-        document.getElementById(
-            "authMessage"
-        );
+    const messageElement = document.getElementById("authMessage");
 
-
-    if (!messageElement) {
-        return;
-    }
-
-
-    messageElement.textContent =
-        message;
-
-
-    messageElement.className =
-        `auth-message ${type}`;
+    messageElement.textContent = message;
+    messageElement.className = `auth-message ${type}`;
 }
 
 
 function clearAuthMessage() {
 
-    const messageElement =
-        document.getElementById(
-            "authMessage"
-        );
+    const messageElement = document.getElementById("authMessage");
 
-
-    if (!messageElement) {
-        return;
-    }
-
-
-    messageElement.textContent =
-        "";
-
-
-    messageElement.className =
-        "auth-message hidden";
+    messageElement.textContent = "";
+    messageElement.className = "auth-message hidden";
 }
 
 
 /* =========================
-   AUTH BUTTON LOADING
+   AUTHENTICATION LOADING
 ========================= */
 
-function setAuthLoading(
-    isLoading
-) {
+function setAuthLoading(isLoading) {
 
-    const button =
-        authForm.querySelector(
-            ".primary-button"
-        );
+    const button = authForm.querySelector(".primary-button");
 
-
-    button.disabled =
-        isLoading;
-
+    button.disabled = isLoading;
 
     if (isLoading) {
 
-        button.textContent =
-            isSignUpMode
-                ? "Creating account..."
-                : "Signing in...";
+        button.textContent = isSignUpMode
+            ? "Creating account..."
+            : "Signing in...";
 
     } else {
 
-        button.textContent =
-            isSignUpMode
-                ? "Sign up"
-                : "Sign in";
+        button.textContent = isSignUpMode
+            ? "Sign up"
+            : "Sign in";
     }
 }
 
 
 /* =========================
-   AUTH FORM
+   AUTHENTICATION FORM
 ========================= */
 
-authForm.addEventListener(
-    "submit",
-    async (event) => {
+authForm.addEventListener("submit", async (event) => {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        clearAuthMessage();
+    clearAuthMessage();
 
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-        const email =
-            emailInput.value.trim();
+    if (!email || !password) {
 
-        const password =
-            passwordInput.value;
+        showAuthMessage(
+            "Please enter your email and password."
+        );
 
+        return;
+    }
 
-        if (!email || !password) {
+    setAuthLoading(true);
 
-            showAuthMessage(
-                "Please enter your email and password."
-            );
+    try {
 
-            return;
-        }
+        if (isSignUpMode) {
 
-
-        setAuthLoading(true);
-
-
-        try {
-
-            /* =========================
-               SIGN UP
-            ========================== */
-
-            if (isSignUpMode) {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth.signUp({
-                        email: email,
-                        password: password
-                    });
-
-
-                if (error) {
-                    throw error;
-                }
-
-
-                if (data.session) {
-
-                    await showNotesPage();
-
-                } else {
-
-                    showAuthMessage(
-                        "Account created. Please check your email to confirm your account.",
-                        "success"
-                    );
-
-                    passwordInput.value = "";
-                }
-
-                return;
-            }
-
-
-            /* =========================
-               SIGN IN
-            ========================== */
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
+            const { data, error } =
+                await supabaseClient.auth.signUp({
+                    email,
+                    password
                 });
-
 
             if (error) {
                 throw error;
             }
 
-
             if (data.session) {
 
                 await showNotesPage();
+
+            } else {
+
+                showAuthMessage(
+                    "Account created. Please check your email to confirm your account.",
+                    "success"
+                );
+
+                passwordInput.value = "";
             }
 
-
-        } catch (error) {
-
-            console.error(
-                "Authentication error:",
-                error
-            );
-
-
-            showAuthMessage(
-                getFriendlyAuthError(error)
-            );
-
-        } finally {
-
-            setAuthLoading(false);
+            return;
         }
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
+            await showNotesPage();
+        }
+
+    } catch (error) {
+
+        console.error("Authentication error:", error);
+
+        showAuthMessage(getFriendlyAuthError(error));
+
+    } finally {
+
+        setAuthLoading(false);
     }
-);
+});
 
 
 /* =========================
-   AUTH ERRORS
+   FRIENDLY AUTH ERRORS
 ========================= */
 
-function getFriendlyAuthError(
-    error
-) {
+function getFriendlyAuthError(error) {
 
-    const message =
-        error?.message?.toLowerCase() || "";
+    const message = error?.message?.toLowerCase() || "";
 
-
-    if (
-        message.includes(
-            "invalid login credentials"
-        )
-    ) {
-
+    if (message.includes("invalid login credentials")) {
         return "Incorrect email or password.";
     }
 
-
-    if (
-        message.includes(
-            "email not confirmed"
-        )
-    ) {
-
+    if (message.includes("email not confirmed")) {
         return "Please confirm your email before signing in.";
     }
 
-
-    if (
-        message.includes("password")
-    ) {
-
+    if (message.includes("password")) {
         return error.message;
     }
 
-
-    if (
-        message.includes("email")
-    ) {
-
+    if (message.includes("email")) {
         return error.message;
     }
-
 
     return "Something went wrong. Please try again.";
 }
@@ -406,14 +280,10 @@ function getFriendlyAuthError(
 
 async function showNotesPage() {
 
-    authPage.classList.add(
-        "hidden"
-    );
+    closeEditorImmediately();
 
-    notesPage.classList.remove(
-        "hidden"
-    );
-
+    authPage.classList.add("hidden");
+    notesPage.classList.remove("hidden");
 
     await loadNotes();
 }
@@ -425,16 +295,10 @@ async function showNotesPage() {
 
 function showAuthPage() {
 
-    notesPage.classList.add(
-        "hidden"
-    );
+    closeEditorImmediately();
 
-    authPage.classList.remove(
-        "hidden"
-    );
-
-
-    closeEditor();
+    notesPage.classList.add("hidden");
+    authPage.classList.remove("hidden");
 }
 
 
@@ -444,56 +308,88 @@ function showAuthPage() {
 
 async function loadNotes() {
 
-    notesGrid.innerHTML =
-        `<p class="notes-status">
-            Loading notes...
-        </p>`;
+    notesGrid.innerHTML = `
+        <p class="notes-status">Loading your notes...</p>
+    `;
 
+    pinnedGrid.innerHTML = "";
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
+    try {
+
+        const { data, error } = await supabaseClient
             .from("notes")
             .select("*")
-            .order(
-                "is_pinned",
-                {
-                    ascending: false
-                }
-            )
-            .order(
-                "updated_at",
-                {
-                    ascending: false
-                }
-            );
+            .order("is_pinned", { ascending: false })
+            .order("updated_at", { ascending: false });
+
+        if (error) {
+            throw error;
+        }
+
+        notes = data || [];
+
+        sortNotes();
+        renderNotes();
+
+    } catch (error) {
+
+        console.error("Load notes error:", error);
+
+        pinnedSection.classList.add("hidden");
+        otherNotesSection.classList.remove("hidden");
+        emptyState.classList.add("hidden");
+
+        notesGrid.innerHTML = `
+            <p class="notes-status error">
+                Unable to load your notes. Please refresh and try again.
+            </p>
+        `;
+    }
+}
 
 
-    if (error) {
+/* =========================
+   SORT NOTES
+========================= */
 
-        console.error(
-            "Load notes error:",
-            error
-        );
+function sortNotes() {
+
+    notes.sort((a, b) => {
+
+        if (a.is_pinned !== b.is_pinned) {
+            return a.is_pinned ? -1 : 1;
+        }
+
+        return new Date(b.updated_at || 0)
+            - new Date(a.updated_at || 0);
+    });
+}
 
 
-        notesGrid.innerHTML =
-            `<p class="notes-status error">
-                Unable to load your notes.
-            </p>`;
+/* =========================
+   FILTER NOTES
+========================= */
 
+function getFilteredNotes() {
 
-        return;
+    const searchTerm = searchInput.value
+        .trim()
+        .toLowerCase();
+
+    if (!searchTerm) {
+        return notes;
     }
 
+    return notes.filter((note) => {
 
-    notes =
-        data || [];
+        const title = note.title?.toLowerCase() || "";
+        const content = note.content?.toLowerCase() || "";
 
-
-    renderNotes(notes);
+        return (
+            title.includes(searchTerm) ||
+            content.includes(searchTerm)
+        );
+    });
 }
 
 
@@ -501,176 +397,267 @@ async function loadNotes() {
    RENDER NOTES
 ========================= */
 
-function renderNotes(
-    notesToRender
-) {
+function renderNotes() {
 
+    const filteredNotes = getFilteredNotes();
+
+    const pinnedNotes = filteredNotes.filter(
+        (note) => note.is_pinned
+    );
+
+    const otherNotes = filteredNotes.filter(
+        (note) => !note.is_pinned
+    );
+
+    const searchTerm = searchInput.value.trim();
+
+    noteCount.textContent = searchTerm
+        ? `${filteredNotes.length} result${filteredNotes.length === 1 ? "" : "s"}`
+        : `${notes.length} note${notes.length === 1 ? "" : "s"}`;
+
+    pinnedCount.textContent = pinnedNotes.length;
+    otherNotesCount.textContent = otherNotes.length;
+
+    pinnedGrid.innerHTML = "";
     notesGrid.innerHTML = "";
 
+    if (filteredNotes.length === 0) {
 
-    if (
-        notesToRender.length === 0
-    ) {
+        pinnedSection.classList.add("hidden");
+        otherNotesSection.classList.add("hidden");
 
-        notesGrid.innerHTML =
-            `<p class="notes-status">
-                No notes yet. Create your first note.
-            </p>`;
+        emptyState.classList.remove("hidden");
 
+        if (searchTerm) {
+
+            emptyStateTitle.textContent = "No matching notes";
+
+            emptyStateDescription.textContent =
+                "Try a different search term or clear your search.";
+
+            emptyStateCreateButton.classList.add("hidden");
+
+        } else {
+
+            emptyStateTitle.textContent = "Your space for ideas";
+
+            emptyStateDescription.textContent =
+                "Create your first note and keep your thoughts in one place.";
+
+            emptyStateCreateButton.classList.remove("hidden");
+        }
 
         return;
     }
 
+    emptyState.classList.add("hidden");
 
-    notesToRender.forEach(
-        (note) => {
+    if (pinnedNotes.length > 0) {
 
-            const noteCard =
-                document.createElement(
-                    "article"
-                );
+        pinnedSection.classList.remove("hidden");
 
+        pinnedNotes.forEach((note) => {
+            pinnedGrid.appendChild(createNoteCard(note));
+        });
 
-            noteCard.className =
-                "note-card";
+    } else {
 
+        pinnedSection.classList.add("hidden");
+    }
 
-            if (note.is_pinned) {
+    if (otherNotes.length > 0) {
 
-                noteCard.classList.add(
-                    "pinned"
-                );
-            }
+        otherNotesSection.classList.remove("hidden");
 
+        otherNotesHeading.textContent =
+            searchTerm ? "Other matching notes" : "Others";
 
-            const title =
-                document.createElement(
-                    "h3"
-                );
+        otherNotes.forEach((note) => {
+            notesGrid.appendChild(createNoteCard(note));
+        });
 
+    } else {
 
-            title.textContent =
-                note.title ||
-                "Untitled note";
-
-
-            const content =
-                document.createElement(
-                    "p"
-                );
+        otherNotesSection.classList.add("hidden");
+    }
+}
 
 
-            content.textContent =
-                note.content ||
-                "Empty note";
+/* =========================
+   CREATE NOTE CARD
+========================= */
 
+function createNoteCard(note) {
 
-            const actions =
-                document.createElement(
-                    "div"
-                );
+    const card = document.createElement("article");
 
+    card.className = "note-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
 
-            actions.className =
-                "note-actions";
-
-
-            const pinButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            pinButton.type =
-                "button";
-
-
-            pinButton.className =
-                "note-action-button";
-
-
-            pinButton.textContent =
-                note.is_pinned
-                    ? "Unpin"
-                    : "Pin";
-
-
-            pinButton.addEventListener(
-                "click",
-                (event) => {
-
-                    event.stopPropagation();
-
-                    togglePin(note);
-                }
-            );
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            deleteButton.type =
-                "button";
-
-
-            deleteButton.className =
-                "note-action-button delete";
-
-
-            deleteButton.textContent =
-                "Delete";
-
-
-            deleteButton.addEventListener(
-                "click",
-                (event) => {
-
-                    event.stopPropagation();
-
-                    deleteNote(note.id);
-                }
-            );
-
-
-            actions.appendChild(
-                pinButton
-            );
-
-            actions.appendChild(
-                deleteButton
-            );
-
-
-            noteCard.appendChild(
-                title
-            );
-
-            noteCard.appendChild(
-                content
-            );
-
-            noteCard.appendChild(
-                actions
-            );
-
-
-            noteCard.addEventListener(
-                "click",
-                () => {
-
-                    openNoteEditor(note);
-                }
-            );
-
-
-            notesGrid.appendChild(
-                noteCard
-            );
-        }
+    card.setAttribute(
+        "aria-label",
+        `Open note: ${note.title || "Untitled note"}`
     );
+
+    if (note.is_pinned) {
+        card.classList.add("pinned");
+    }
+
+    const header = document.createElement("div");
+    header.className = "note-card-header";
+
+    const title = document.createElement("h3");
+    title.textContent = note.title || "Untitled note";
+
+    header.appendChild(title);
+
+    if (note.is_pinned) {
+
+        const pinIndicator = document.createElement("span");
+
+        pinIndicator.className = "note-pin-indicator";
+        pinIndicator.textContent = "Pinned";
+
+        header.appendChild(pinIndicator);
+    }
+
+    const content = document.createElement("p");
+
+    content.textContent = note.content || "No content yet.";
+
+    const footer = document.createElement("div");
+    footer.className = "note-card-footer";
+
+    const timestamp = document.createElement("time");
+
+    timestamp.className = "note-timestamp";
+    timestamp.dateTime = note.updated_at || "";
+
+    timestamp.textContent = formatUpdatedAt(note.updated_at);
+
+    const actions = document.createElement("div");
+    actions.className = "note-actions";
+
+    const pinButton = document.createElement("button");
+
+    pinButton.type = "button";
+    pinButton.className = "note-action-button";
+    pinButton.textContent = note.is_pinned ? "Unpin" : "Pin";
+
+    pinButton.addEventListener("click", async (event) => {
+
+        event.stopPropagation();
+
+        pinButton.disabled = true;
+
+        await togglePin(note);
+
+        pinButton.disabled = false;
+    });
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.type = "button";
+    deleteButton.className = "note-action-button delete";
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", async (event) => {
+
+        event.stopPropagation();
+
+        deleteButton.disabled = true;
+
+        await deleteNote(note.id);
+
+        deleteButton.disabled = false;
+    });
+
+    actions.appendChild(pinButton);
+    actions.appendChild(deleteButton);
+
+    footer.appendChild(timestamp);
+    footer.appendChild(actions);
+
+    card.appendChild(header);
+    card.appendChild(content);
+    card.appendChild(footer);
+
+    card.addEventListener("click", () => {
+        openNoteEditor(note);
+    });
+
+    card.addEventListener("keydown", (event) => {
+
+        if (
+            event.target === card &&
+            (event.key === "Enter" || event.key === " ")
+        ) {
+
+            event.preventDefault();
+
+            openNoteEditor(note);
+        }
+    });
+
+    return card;
+}
+
+
+/* =========================
+   FORMAT TIMESTAMP
+========================= */
+
+function formatUpdatedAt(timestamp) {
+
+    if (!timestamp) {
+        return "Date unavailable";
+    }
+
+    const date = new Date(timestamp);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Date unavailable";
+    }
+
+    const now = new Date();
+
+    const isToday =
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate();
+
+    const yesterday = new Date(now);
+
+    yesterday.setDate(now.getDate() - 1);
+
+    const isYesterday =
+        date.getFullYear() === yesterday.getFullYear() &&
+        date.getMonth() === yesterday.getMonth() &&
+        date.getDate() === yesterday.getDate();
+
+    const timeText = new Intl.DateTimeFormat(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
+    }).format(date);
+
+    if (isToday) {
+        return `Updated today at ${timeText}`;
+    }
+
+    if (isYesterday) {
+        return `Updated yesterday at ${timeText}`;
+    }
+
+    const dateText = new Intl.DateTimeFormat(undefined, {
+        day: "numeric",
+        month: "short",
+        year: date.getFullYear() === now.getFullYear()
+            ? undefined
+            : "numeric"
+    }).format(date);
+
+    return `Updated ${dateText}`;
 }
 
 
@@ -678,29 +665,31 @@ function renderNotes(
    CREATE NOTE
 ========================= */
 
-addNoteButton.addEventListener(
-    "click",
-    createEmptyNote
-);
+addNoteButton.addEventListener("click", createEmptyNote);
+
+emptyStateCreateButton.addEventListener("click", createEmptyNote);
 
 
 async function createEmptyNote() {
 
-    addNoteButton.disabled =
-        true;
+    if (isCreatingNote) {
+        return;
+    }
 
+    isCreatingNote = true;
+    addNoteButton.disabled = true;
+    emptyStateCreateButton.disabled = true;
 
     try {
 
         const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient
-                .auth
-                .getUser();
+            data: { user },
+            error: userError
+        } = await supabaseClient.auth.getUser();
 
+        if (userError) {
+            throw userError;
+        }
 
         if (!user) {
 
@@ -709,48 +698,44 @@ async function createEmptyNote() {
             return;
         }
 
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("notes")
-                .insert({
-                    user_id: user.id,
-                    title: "",
-                    content: "",
-                    is_pinned: false
-                })
-                .select()
-                .single();
-
+        const { data, error } = await supabaseClient
+            .from("notes")
+            .insert({
+                user_id: user.id,
+                title: "",
+                content: "",
+                is_pinned: false
+            })
+            .select()
+            .single();
 
         if (error) {
             throw error;
         }
 
-
         notes.unshift(data);
 
-
-        renderNotes(notes);
-
+        sortNotes();
+        renderNotes();
 
         openNoteEditor(data);
 
-
     } catch (error) {
 
-        console.error(
-            "Create note error:",
-            error
-        );
+        console.error("Create note error:", error);
+
+        emptyStateTitle.textContent = "Couldn't create your note";
+
+        emptyStateDescription.textContent =
+            "Please try again. If the problem continues, check your connection.";
+
+        emptyState.classList.remove("hidden");
 
     } finally {
 
-        addNoteButton.disabled =
-            false;
+        isCreatingNote = false;
+        addNoteButton.disabled = false;
+        emptyStateCreateButton.disabled = false;
     }
 }
 
@@ -761,116 +746,35 @@ async function createEmptyNote() {
 
 function openNoteEditor(note) {
 
-    currentNote = {
-        ...note
-    };
+    clearTimeout(saveTimer);
 
+    currentNote = { ...note };
 
-    isEditorDirty =
-        false;
+    isEditorDirty = false;
+    editRevision = 0;
 
-
-    editorTitleInput.value =
-        note.title || "";
-
-
-    editorContentInput.value =
-        note.content || "";
-
+    editorTitleInput.value = note.title || "";
+    editorContentInput.value = note.content || "";
 
     updateEditorPinButton();
 
+    setEditorStatus("Saved");
 
-    setEditorStatus(
-        "Saved"
-    );
+    editorOverlay.classList.remove("hidden");
 
-
-    editorOverlay.classList.remove(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
+    document.body.style.overflow = "hidden";
 
     editorTitleInput.focus();
 }
 
 
 /* =========================
-   CLOSE NOTE EDITOR
-========================= */
-
-async function closeEditor() {
-
-    if (!currentNote) {
-        return;
-    }
-
-
-    if (isEditorDirty) {
-
-        await saveCurrentNote();
-    }
-
-
-    clearTimeout(saveTimer);
-
-
-    currentNote =
-        null;
-
-
-    isEditorDirty =
-        false;
-
-
-    editorOverlay.classList.add(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "";
-
-
-    searchInput.focus();
-
-
-    renderNotes(
-        getFilteredNotes()
-    );
-}
-
-
-closeEditorButton.addEventListener(
-    "click",
-    closeEditor
-);
-
-
-editorDoneButton.addEventListener(
-    "click",
-    closeEditor
-);
-
-
-/* =========================
    EDITOR INPUT
 ========================= */
 
-editorTitleInput.addEventListener(
-    "input",
-    handleEditorInput
-);
+editorTitleInput.addEventListener("input", handleEditorInput);
 
-
-editorContentInput.addEventListener(
-    "input",
-    handleEditorInput
-);
+editorContentInput.addEventListener("input", handleEditorInput);
 
 
 function handleEditorInput() {
@@ -879,32 +783,19 @@ function handleEditorInput() {
         return;
     }
 
+    currentNote.title = editorTitleInput.value;
+    currentNote.content = editorContentInput.value;
 
-    currentNote.title =
-        editorTitleInput.value;
+    editRevision += 1;
+    isEditorDirty = true;
 
-
-    currentNote.content =
-        editorContentInput.value;
-
-
-    isEditorDirty =
-        true;
-
-
-    setEditorStatus(
-        "Unsaved changes"
-    );
-
+    setEditorStatus("Unsaved changes");
 
     clearTimeout(saveTimer);
 
-
-    saveTimer =
-        setTimeout(
-            saveCurrentNote,
-            700
-        );
+    saveTimer = setTimeout(() => {
+        saveCurrentNote();
+    }, 700);
 }
 
 
@@ -914,101 +805,115 @@ function handleEditorInput() {
 
 async function saveCurrentNote() {
 
-    if (
-        !currentNote ||
-        isSaving
-    ) {
+    clearTimeout(saveTimer);
 
-        return;
+    if (!currentNote) {
+        return true;
     }
 
-
-    isSaving =
-        true;
-
-
-    setEditorStatus(
-        "Saving..."
-    );
-
-
-    const title =
-        editorTitleInput.value.trim();
-
-
-    const content =
-        editorContentInput.value;
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("notes")
-            .update({
-                title:
-                    title || "Untitled note",
-
-                content:
-                    content,
-
-                updated_at:
-                    new Date().toISOString()
-            })
-            .eq(
-                "id",
-                currentNote.id
-            )
-            .select()
-            .single();
-
-
-    if (error) {
-
-        console.error(
-            "Save note error:",
-            error
-        );
-
-
-        setEditorStatus(
-            "Unable to save"
-        );
-
-
-        isSaving =
-            false;
-
-
-        return;
+    if (!isEditorDirty) {
+        return true;
     }
 
+    if (savePromise) {
 
-    currentNote =
-        data;
+        await savePromise;
 
+        if (currentNote && isEditorDirty) {
+            return saveCurrentNote();
+        }
 
-    notes =
-        notes.map(
-            (note) =>
-                note.id === data.id
-                    ? data
-                    : note
-        );
+        return !isEditorDirty;
+    }
 
+    savePromise = (async () => {
 
-    isEditorDirty =
-        false;
+        let succeeded = true;
 
+        while (currentNote && isEditorDirty) {
 
-    isSaving =
-        false;
+            const noteId = currentNote.id;
+            const revisionBeingSaved = editRevision;
 
+            const title = editorTitleInput.value.trim();
+            const content = editorContentInput.value;
 
-    setEditorStatus(
-        "Saved"
-    );
+            setEditorStatus("Saving...");
+
+            try {
+
+                const { data, error } = await supabaseClient
+                    .from("notes")
+                    .update({
+                        title: title || "Untitled note",
+                        content,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq("id", noteId)
+                    .select()
+                    .single();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (!currentNote || currentNote.id !== noteId) {
+                    break;
+                }
+
+                currentNote = data;
+
+                notes = notes.map((note) =>
+                    note.id === data.id ? data : note
+                );
+
+                sortNotes();
+
+                if (editRevision === revisionBeingSaved) {
+
+                    isEditorDirty = false;
+
+                    setEditorStatus("Saved");
+
+                } else {
+
+                    isEditorDirty = true;
+
+                    setEditorStatus("Saving latest changes...");
+                }
+
+            } catch (error) {
+
+                console.error("Save note error:", error);
+
+                setEditorStatus("Unable to save. Try again.");
+
+                succeeded = false;
+
+                break;
+            }
+        }
+
+        return succeeded && !isEditorDirty;
+
+    })();
+
+    let result = false;
+
+    try {
+
+        result = await savePromise;
+
+    } finally {
+
+        savePromise = null;
+    }
+
+    if (result) {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -1016,23 +921,81 @@ async function saveCurrentNote() {
    EDITOR STATUS
 ========================= */
 
-function setEditorStatus(
-    message
-) {
-
-    editorStatus.textContent =
-        message;
+function setEditorStatus(message) {
+    editorStatus.textContent = message;
 }
 
 
 /* =========================
-   PIN / UNPIN
+   CLOSE EDITOR
 ========================= */
 
-editorPinButton.addEventListener(
-    "click",
-    toggleCurrentNotePin
-);
+closeEditorButton.addEventListener("click", closeEditor);
+
+editorDoneButton.addEventListener("click", closeEditor);
+
+
+async function closeEditor() {
+
+    if (!currentNote || isClosingEditor) {
+        return;
+    }
+
+    isClosingEditor = true;
+
+    clearTimeout(saveTimer);
+
+    if (isEditorDirty) {
+
+        const saved = await saveCurrentNote();
+
+        if (!saved) {
+
+            isClosingEditor = false;
+
+            return;
+        }
+    }
+
+    if (savePromise) {
+        await savePromise;
+    }
+
+    currentNote = null;
+
+    isEditorDirty = false;
+
+    editorOverlay.classList.add("hidden");
+
+    document.body.style.overflow = "";
+
+    renderNotes();
+
+    isClosingEditor = false;
+}
+
+
+function closeEditorImmediately() {
+
+    clearTimeout(saveTimer);
+
+    currentNote = null;
+
+    isEditorDirty = false;
+
+    editorOverlay.classList.add("hidden");
+
+    document.body.style.overflow = "";
+
+    isClosingEditor = false;
+}
+
+
+/* =========================
+   PIN CURRENT NOTE
+========================= */
+
+editorPinButton.addEventListener("click", toggleCurrentNotePin);
 
 
 async function toggleCurrentNotePin() {
@@ -1041,80 +1004,61 @@ async function toggleCurrentNotePin() {
         return;
     }
 
+    if (isEditorDirty) {
 
-    const newPinnedState =
-        !currentNote.is_pinned;
+        const saved = await saveCurrentNote();
 
+        if (!saved) {
+            return;
+        }
+    }
 
-    editorPinButton.disabled =
-        true;
+    const newPinnedState = !currentNote.is_pinned;
 
+    editorPinButton.disabled = true;
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
+    try {
+
+        const { data, error } = await supabaseClient
             .from("notes")
             .update({
-                is_pinned:
-                    newPinnedState,
-
-                updated_at:
-                    new Date().toISOString()
+                is_pinned: newPinnedState,
+                updated_at: new Date().toISOString()
             })
-            .eq(
-                "id",
-                currentNote.id
-            )
+            .eq("id", currentNote.id)
             .select()
             .single();
 
+        if (error) {
+            throw error;
+        }
 
-    if (error) {
+        currentNote = data;
 
-        console.error(
-            "Pin update error:",
-            error
+        notes = notes.map((note) =>
+            note.id === data.id ? data : note
         );
 
+        sortNotes();
 
-        editorPinButton.disabled =
-            false;
+        updateEditorPinButton();
+        renderNotes();
 
+    } catch (error) {
 
-        return;
+        console.error("Pin update error:", error);
+
+        setEditorStatus("Unable to update pin.");
+
+    } finally {
+
+        editorPinButton.disabled = false;
     }
-
-
-    currentNote =
-        data;
-
-
-    notes =
-        notes.map(
-            (note) =>
-                note.id === data.id
-                    ? data
-                    : note
-        );
-
-
-    updateEditorPinButton();
-
-
-    renderNotes(
-        getFilteredNotes()
-    );
-
-
-    editorPinButton.disabled =
-        false;
 }
 
 
 /* =========================
-   UPDATE PIN BUTTON
+   UPDATE EDITOR PIN BUTTON
 ========================= */
 
 function updateEditorPinButton() {
@@ -1123,24 +1067,53 @@ function updateEditorPinButton() {
         return;
     }
 
-
     if (currentNote.is_pinned) {
 
-        editorPinButton.textContent =
-            "Pinned";
+        editorPinButton.textContent = "Pinned";
 
-        editorPinButton.classList.add(
-            "active"
-        );
+        editorPinButton.classList.add("active");
 
     } else {
 
-        editorPinButton.textContent =
-            "Pin";
+        editorPinButton.textContent = "Pin";
 
-        editorPinButton.classList.remove(
-            "active"
+        editorPinButton.classList.remove("active");
+    }
+}
+
+
+/* =========================
+   PIN NOTE FROM CARD
+========================= */
+
+async function togglePin(note) {
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from("notes")
+            .update({
+                is_pinned: !note.is_pinned,
+                updated_at: new Date().toISOString()
+            })
+            .eq("id", note.id)
+            .select()
+            .single();
+
+        if (error) {
+            throw error;
+        }
+
+        notes = notes.map((item) =>
+            item.id === note.id ? data : item
         );
+
+        sortNotes();
+        renderNotes();
+
+    } catch (error) {
+
+        console.error("Pin update error:", error);
     }
 }
 
@@ -1149,21 +1122,41 @@ function updateEditorPinButton() {
    DELETE CURRENT NOTE
 ========================= */
 
-editorDeleteButton.addEventListener(
-    "click",
-    async () => {
+editorDeleteButton.addEventListener("click", async () => {
 
-        if (!currentNote) {
+    if (!currentNote || isDeletingNote) {
+        return;
+    }
+
+    isDeletingNote = true;
+    editorDeleteButton.disabled = true;
+
+    clearTimeout(saveTimer);
+
+    if (isEditorDirty) {
+
+        const saved = await saveCurrentNote();
+
+        if (!saved) {
+
+            isDeletingNote = false;
+            editorDeleteButton.disabled = false;
+
             return;
         }
-
-
-        await deleteNote(
-            currentNote.id,
-            true
-        );
     }
-);
+
+    const noteId = currentNote.id;
+
+    const deleted = await deleteNote(noteId, true);
+
+    isDeletingNote = false;
+    editorDeleteButton.disabled = false;
+
+    if (!deleted) {
+        setEditorStatus("Unable to delete note.");
+    }
+});
 
 
 /* =========================
@@ -1175,73 +1168,39 @@ async function deleteNote(
     closeEditorAfterDelete = false
 ) {
 
-    const {
-        error
-    } =
-        await supabaseClient
+    try {
+
+        const { error } = await supabaseClient
             .from("notes")
             .delete()
-            .eq(
-                "id",
-                noteId
-            );
+            .eq("id", noteId);
 
+        if (error) {
+            throw error;
+        }
 
-    if (error) {
+        notes = notes.filter((note) => note.id !== noteId);
 
-        console.error(
-            "Delete note error:",
-            error
-        );
+        if (
+            closeEditorAfterDelete &&
+            currentNote &&
+            currentNote.id === noteId
+        ) {
 
+            closeEditorImmediately();
+        }
 
-        return;
+        sortNotes();
+        renderNotes();
+
+        return true;
+
+    } catch (error) {
+
+        console.error("Delete note error:", error);
+
+        return false;
     }
-
-
-    notes =
-        notes.filter(
-            (note) =>
-                note.id !== noteId
-        );
-
-
-    if (
-        closeEditorAfterDelete
-    ) {
-
-        clearTimeout(saveTimer);
-
-
-        currentNote =
-            null;
-
-
-        isEditorDirty =
-            false;
-
-
-        editorOverlay.classList.add(
-            "hidden"
-        );
-
-
-        document.body.style.overflow =
-            "";
-
-
-        renderNotes(
-            getFilteredNotes()
-        );
-
-
-        return;
-    }
-
-
-    renderNotes(
-        getFilteredNotes()
-    );
 }
 
 
@@ -1249,263 +1208,114 @@ async function deleteNote(
    SEARCH NOTES
 ========================= */
 
-searchInput.addEventListener(
-    "input",
-    () => {
-
-        renderNotes(
-            getFilteredNotes()
-        );
-    }
-);
+searchInput.addEventListener("input", renderNotes);
 
 
 /* =========================
-   FILTER NOTES
+   HOME BUTTON
 ========================= */
 
-function getFilteredNotes() {
+homeButton.addEventListener("click", (event) => {
 
-    const searchTerm =
-        searchInput.value
-            .trim()
-            .toLowerCase();
+    event.preventDefault();
 
+    searchInput.value = "";
 
-    if (!searchTerm) {
+    renderNotes();
 
-        return notes;
-    }
-
-
-    return notes.filter(
-        (note) => {
-
-            const title =
-                note.title
-                    ?.toLowerCase() ||
-                "";
-
-
-            const content =
-                note.content
-                    ?.toLowerCase() ||
-                "";
-
-
-            return (
-                title.includes(
-                    searchTerm
-                ) ||
-                content.includes(
-                    searchTerm
-                )
-            );
-        }
-    );
-}
-
-
-/* =========================
-   PIN / UNPIN FROM CARD
-========================= */
-
-async function togglePin(note) {
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from("notes")
-            .update({
-                is_pinned:
-                    !note.is_pinned,
-
-                updated_at:
-                    new Date().toISOString()
-            })
-            .eq(
-                "id",
-                note.id
-            )
-            .select()
-            .single();
-
-
-    if (error) {
-
-        console.error(
-            "Pin update error:",
-            error
-        );
-
-
-        return;
-    }
-
-
-    notes =
-        notes.map(
-            (item) =>
-                item.id === note.id
-                    ? data
-                    : item
-        );
-
-
-    sortNotes();
-
-
-    renderNotes(
-        getFilteredNotes()
-    );
-}
-
-
-/* =========================
-   SORT NOTES
-========================= */
-
-function sortNotes() {
-
-    notes.sort(
-        (a, b) => {
-
-            if (
-                a.is_pinned !==
-                b.is_pinned
-            ) {
-
-                return a.is_pinned
-                    ? -1
-                    : 1;
-            }
-
-
-            return (
-                new Date(
-                    b.updated_at
-                ) -
-                new Date(
-                    a.updated_at
-                )
-            );
-        }
-    );
-}
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
 
 
 /* =========================
    LOGOUT
 ========================= */
 
-logoutButton.addEventListener(
-    "click",
-    async () => {
+logoutButton.addEventListener("click", async () => {
 
-        clearTimeout(saveTimer);
+    clearTimeout(saveTimer);
 
+    if (isEditorDirty) {
 
-        if (
-            currentNote &&
-            isEditorDirty
-        ) {
+        const saved = await saveCurrentNote();
 
-            await saveCurrentNote();
-        }
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .auth
-                .signOut();
-
-
-        if (error) {
-
-            console.error(
-                "Logout error:",
-                error
-            );
-
-
+        if (!saved) {
             return;
         }
-
-
-        notes = [];
-
-        notesGrid.innerHTML = "";
-
-        searchInput.value = "";
-
-
-        currentNote =
-            null;
-
-
-        isEditorDirty =
-            false;
-
-
-        showAuthPage();
-
-
-        authForm.reset();
-
-
-        isSignUpMode =
-            false;
-
-
-        authTitle.textContent =
-            "Your notes, understood by AI";
-
-
-        authSubtitle.textContent =
-            "Sign in to access your notes.";
-
-
-        authSwitchText.textContent =
-            "Don't have an account?";
-
-
-        authSwitchButton.textContent =
-            "Sign up";
-
-
-        authForm
-            .querySelector(
-                ".primary-button"
-            )
-            .textContent =
-                "Sign in";
     }
-);
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+
+        console.error("Logout error:", error);
+
+        return;
+    }
+
+    notes = [];
+
+    searchInput.value = "";
+
+    authForm.reset();
+
+    isSignUpMode = false;
+
+    authTitle.textContent =
+        "Your notes, understood by AI";
+
+    authSubtitle.textContent =
+        "Sign in to access your notes.";
+
+    authSwitchText.textContent =
+        "Don't have an account?";
+
+    authSwitchButton.textContent = "Sign up";
+
+    authForm.querySelector(".primary-button").textContent =
+        "Sign in";
+
+    clearAuthMessage();
+
+    renderNotes();
+
+    showAuthPage();
+});
 
 
 /* =========================
    ESCAPE KEY
 ========================= */
 
-document.addEventListener(
-    "keydown",
-    (event) => {
+document.addEventListener("keydown", (event) => {
 
-        if (
-            event.key === "Escape" &&
-            !editorOverlay.classList.contains(
-                "hidden"
-            )
-        ) {
-
-            closeEditor();
-        }
+    if (
+        event.key === "Escape" &&
+        !editorOverlay.classList.contains("hidden")
+    ) {
+        closeEditor();
     }
-);
+});
+
+
+/* =========================
+   AUTH STATE LISTENER
+========================= */
+
+supabaseClient.auth.onAuthStateChange((event) => {
+
+    if (event === "SIGNED_OUT") {
+
+        notes = [];
+
+        searchInput.value = "";
+
+        showAuthPage();
+    }
+});
 
 
 /* =========================
@@ -1514,35 +1324,27 @@ document.addEventListener(
 
 async function checkSession() {
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
+    try {
 
+        const { data, error } =
+            await supabaseClient.auth.getSession();
 
-    if (error) {
+        if (error) {
+            throw error;
+        }
 
-        console.error(
-            "Session error:",
-            error
-        );
+        if (data.session) {
 
+            await showNotesPage();
 
-        showAuthPage();
+        } else {
 
+            showAuthPage();
+        }
 
-        return;
-    }
+    } catch (error) {
 
-
-    if (data.session) {
-
-        await showNotesPage();
-
-    } else {
+        console.error("Session check error:", error);
 
         showAuthPage();
     }
@@ -1550,40 +1352,7 @@ async function checkSession() {
 
 
 /* =========================
-   AUTH STATE LISTENER
-========================= */
-
-supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
-
-        if (
-            event === "SIGNED_OUT"
-        ) {
-
-            notes = [];
-
-            showAuthPage();
-
-            return;
-        }
-
-
-        /*
-         * SIGNED_IN does not call
-         * showNotesPage here.
-         *
-         * The sign-in form already
-         * handles the transition.
-         *
-         * This prevents duplicate
-         * note loading.
-         */
-    }
-);
-
-
-/* =========================
-   INITIALIZE
+   INITIALIZE APPLICATION
 ========================= */
 
 checkSession();

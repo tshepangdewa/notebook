@@ -2,26 +2,18 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        name="theme-color"
+        content="#F7F9F8"
     >
 
     <title>Notebook</title>
 
-
-    <!-- =========================
-         GOOGLE FONTS
-    ========================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
@@ -33,79 +25,39 @@
         rel="stylesheet"
     >
 
-
-    <!-- =========================
-         MAIN STYLESHEET
-    ========================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-
 <body>
-
 
     <!-- =========================
          AUTHENTICATION PAGE
     ========================== -->
 
-    <main
-        class="auth-page"
-        id="authPage"
-    >
+    <main class="auth-page" id="authPage">
 
         <section class="auth-card">
 
-
-            <!-- BRAND -->
-
             <div class="brand">
-
-                <div class="brand-icon">
-                    N
-                </div>
-
-                <span class="brand-name">
-                    Notebook
-                </span>
-
+                <div class="brand-icon">N</div>
+                <span class="brand-name">Notebook</span>
             </div>
 
-
-            <!-- AUTH HEADER -->
-
             <div class="auth-header">
-
-                <h1
-                    id="authTitle"
-                    class="ai-heading"
-                >
+                <h1 id="authTitle" class="ai-heading">
                     Your notes, understood by AI
                 </h1>
 
                 <p id="authSubtitle">
                     Sign in to access your notes.
                 </p>
-
             </div>
-
-
-            <!-- AUTH FORM -->
 
             <form id="authForm">
 
-
-                <!-- EMAIL -->
-
                 <div class="form-group">
-
-                    <label for="email">
-                        Email
-                    </label>
+                    <label for="email">Email</label>
 
                     <input
                         type="email"
@@ -114,17 +66,10 @@
                         autocomplete="email"
                         required
                     >
-
                 </div>
 
-
-                <!-- PASSWORD -->
-
                 <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
+                    <label for="password">Password</label>
 
                     <input
                         type="password"
@@ -133,19 +78,14 @@
                         autocomplete="current-password"
                         required
                     >
-
                 </div>
-
-
-                <!-- AUTH MESSAGE -->
 
                 <p
                     id="authMessage"
                     class="auth-message hidden"
+                    role="status"
+                    aria-live="polite"
                 ></p>
-
-
-                <!-- SUBMIT BUTTON -->
 
                 <button
                     type="submit"
@@ -156,11 +96,7 @@
 
             </form>
 
-
-            <!-- AUTH SWITCH -->
-
             <p class="auth-switch">
-
                 <span id="authSwitchText">
                     Don't have an account?
                 </span>
@@ -172,9 +108,7 @@
                 >
                     Sign up
                 </button>
-
             </p>
-
 
         </section>
 
@@ -185,28 +119,21 @@
          NOTES PAGE
     ========================== -->
 
-    <main
-        class="notes-page hidden"
-        id="notesPage"
-    >
+    <main class="notes-page hidden" id="notesPage">
 
-
-        <!-- TOP BAR -->
+        <!-- Top navigation -->
 
         <header class="topbar">
 
-            <div class="brand">
-
-                <div class="brand-icon">
-                    N
-                </div>
-
-                <span class="brand-name">
-                    Notebook
-                </span>
-
-            </div>
-
+            <a
+                href="#"
+                class="brand brand-link"
+                id="homeButton"
+                aria-label="Notebook home"
+            >
+                <div class="brand-icon">N</div>
+                <span class="brand-name">Notebook</span>
+            </a>
 
             <button
                 type="button"
@@ -219,27 +146,32 @@
         </header>
 
 
-        <!-- =========================
-             NOTES CONTENT
-        ========================== -->
+        <!-- Main notes area -->
 
         <section class="notes-content">
 
-
             <div class="notes-heading">
 
-                <h1>
-                    Your Notes
-                </h1>
+                <div>
+                    <h1>Your Notes</h1>
 
-                <p>
-                    Capture your thoughts and let AI make sense of them.
-                </p>
+                    <p>
+                        Capture your thoughts and let AI make sense of them.
+                    </p>
+                </div>
+
+                <span
+                    class="note-count"
+                    id="noteCount"
+                    aria-live="polite"
+                >
+                    0 notes
+                </span>
 
             </div>
 
 
-            <!-- SEARCH -->
+            <!-- Search -->
 
             <div class="search-wrapper">
 
@@ -247,39 +179,93 @@
                     type="search"
                     id="searchInput"
                     placeholder="Search your notes..."
+                    aria-label="Search notes by title or content"
                 >
 
             </div>
 
 
-            <!-- NOTES GRID -->
+            <!-- Global empty state -->
 
-            <div
-                class="notes-grid"
-                id="notesGrid"
+            <section
+                class="empty-state hidden"
+                id="emptyState"
+            >
+                <div class="empty-state-icon" aria-hidden="true">
+                    +
+                </div>
+
+                <h2 id="emptyStateTitle">
+                    Your space for ideas
+                </h2>
+
+                <p id="emptyStateDescription">
+                    Create your first note and keep your thoughts in one place.
+                </p>
+
+                <button
+                    type="button"
+                    class="empty-state-button"
+                    id="emptyStateCreateButton"
+                >
+                    Create your first note
+                </button>
+            </section>
+
+
+            <!-- Pinned notes -->
+
+            <section
+                class="notes-section hidden"
+                id="pinnedSection"
             >
 
-                <!-- Notes will be rendered here -->
+                <div class="section-heading">
+                    <h2>Pinned</h2>
+                    <span id="pinnedCount">0</span>
+                </div>
 
-            </div>
+                <div
+                    class="notes-grid"
+                    id="pinnedGrid"
+                ></div>
 
+            </section>
+
+
+            <!-- Regular notes -->
+
+            <section
+                class="notes-section hidden"
+                id="otherNotesSection"
+            >
+
+                <div class="section-heading">
+                    <h2 id="otherNotesHeading">Others</h2>
+                    <span id="otherNotesCount">0</span>
+                </div>
+
+                <div
+                    class="notes-grid"
+                    id="notesGrid"
+                ></div>
+
+            </section>
 
         </section>
 
 
-        <!-- =========================
-             ADD NOTE BUTTON
-        ========================== -->
+        <!-- Floating add button -->
 
         <button
             type="button"
             class="add-note-button"
             id="addNoteButton"
             aria-label="Create a new note"
+            title="Create a new note"
         >
             +
         </button>
-
 
     </main>
 
@@ -300,11 +286,7 @@
             aria-labelledby="editorTitleInput"
         >
 
-
-            <!-- EDITOR HEADER -->
-
             <div class="editor-header">
-
 
                 <button
                     type="button"
@@ -315,13 +297,14 @@
                     ×
                 </button>
 
-
-                <div class="editor-status">
-                    <span id="editorStatus">
-                        Saved
-                    </span>
+                <div
+                    class="editor-status"
+                    id="editorStatus"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Saved
                 </div>
-
 
                 <button
                     type="button"
@@ -334,12 +317,7 @@
             </div>
 
 
-            <!-- EDITOR BODY -->
-
             <div class="editor-body">
-
-
-                <!-- TITLE -->
 
                 <input
                     type="text"
@@ -348,25 +326,20 @@
                     placeholder="Title"
                     maxlength="200"
                     autocomplete="off"
+                    aria-label="Note title"
                 >
-
-
-                <!-- CONTENT -->
 
                 <textarea
                     id="editorContentInput"
                     class="editor-content"
                     placeholder="Start writing..."
+                    aria-label="Note content"
                 ></textarea>
-
 
             </div>
 
 
-            <!-- EDITOR FOOTER -->
-
             <div class="editor-footer">
-
 
                 <button
                     type="button"
@@ -376,7 +349,6 @@
                     Delete
                 </button>
 
-
                 <button
                     type="button"
                     class="editor-done-button"
@@ -385,9 +357,7 @@
                     Done
                 </button>
 
-
             </div>
-
 
         </section>
 
@@ -398,23 +368,9 @@
          JAVASCRIPT
     ========================== -->
 
-    <!-- Supabase Library -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
-
-
-    <!-- Supabase Configuration -->
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
-
-
-    <!-- Notebook Application -->
-
     <script src="js/app.js"></script>
 
-
 </body>
-
 </html>
