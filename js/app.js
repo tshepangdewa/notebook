@@ -70,6 +70,9 @@ const aiSummaryText =
 const aiSummaryMessage =
     document.getElementById("aiSummaryMessage");
 
+const aiCopyButton =
+    document.getElementById("aiCopyButton");
+
 
 /* =========================
    APPLICATION STATE
@@ -967,6 +970,8 @@ function clearAISummary() {
 
     summarizeButton.textContent = "Summarize with AI";
 
+    aiCopyButton.textContent = "Copy summary";
+
     isSummarizing = false;
 }
 
@@ -1057,9 +1062,53 @@ async function summarizeCurrentNote() {
 }
 
 
+/* =========================
+   COPY AI SUMMARY
+========================= */
+
+async function copyAISummary() {
+
+    const summary =
+        aiSummaryText.textContent.trim();
+
+    if (!summary) {
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(summary);
+
+        aiCopyButton.textContent = "Copied!";
+
+        setTimeout(() => {
+
+            aiCopyButton.textContent = "Copy summary";
+
+        }, 1500);
+
+    } catch (error) {
+
+        console.error(
+            "Copy summary error:",
+            error
+        );
+
+        showAISummaryMessage(
+            "Unable to copy the summary. Please try again."
+        );
+    }
+}
+
+
 summarizeButton.addEventListener(
     "click",
     summarizeCurrentNote
+);
+
+aiCopyButton.addEventListener(
+    "click",
+    copyAISummary
 );
 
 

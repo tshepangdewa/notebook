@@ -1012,3 +1012,20 @@ a:focus-visible {
         width: 100%;
     }
 }
+
+.ai-copy-button {
+    margin-top: 14px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 9px 13px;
+    background: var(--white);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ai-copy-button:hover {
+    background: var(--background-color);
+}
