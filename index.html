@@ -8,29 +8,52 @@
 
     <title>Notebook</title>
 
+
     <!-- Geist + Caveat -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Geist:wght@100..900&display=swap"
         rel="stylesheet"
     >
 
+
     <!-- Main stylesheet -->
-    <link rel="stylesheet" href="css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
 </head>
 
+
 <body>
+
 
     <!-- =========================
          AUTHENTICATION PAGE
     ========================== -->
 
-    <main class="auth-page" id="authPage">
+    <main
+        class="auth-page"
+        id="authPage"
+    >
 
         <section class="auth-card">
+
+
+            <!-- BRAND -->
 
             <div class="brand">
 
@@ -45,9 +68,14 @@
             </div>
 
 
+            <!-- AUTH HEADER -->
+
             <div class="auth-header">
 
-                <h1 id="authTitle" class="ai-heading">
+                <h1
+                    id="authTitle"
+                    class="ai-heading"
+                >
                     Your notes, understood by AI
                 </h1>
 
@@ -58,7 +86,12 @@
             </div>
 
 
+            <!-- AUTH FORM -->
+
             <form id="authForm">
+
+
+                <!-- EMAIL -->
 
                 <div class="form-group">
 
@@ -70,11 +103,14 @@
                         type="email"
                         id="email"
                         placeholder="you@example.com"
+                        autocomplete="email"
                         required
                     >
 
                 </div>
 
+
+                <!-- PASSWORD -->
 
                 <div class="form-group">
 
@@ -86,11 +122,22 @@
                         type="password"
                         id="password"
                         placeholder="Enter your password"
+                        autocomplete="current-password"
                         required
                     >
 
                 </div>
 
+
+                <!-- AUTH MESSAGE -->
+
+                <p
+                    id="authMessage"
+                    class="auth-message hidden"
+                ></p>
+
+
+                <!-- SUBMIT BUTTON -->
 
                 <button
                     type="submit"
@@ -101,6 +148,8 @@
 
             </form>
 
+
+            <!-- AUTH SWITCH -->
 
             <p class="auth-switch">
 
@@ -118,6 +167,7 @@
 
             </p>
 
+
         </section>
 
     </main>
@@ -131,6 +181,9 @@
         class="notes-page hidden"
         id="notesPage"
     >
+
+
+        <!-- TOP BAR -->
 
         <header class="topbar">
 
@@ -157,7 +210,10 @@
         </header>
 
 
+        <!-- NOTES CONTENT -->
+
         <section class="notes-content">
+
 
             <div class="notes-heading">
 
@@ -172,6 +228,8 @@
             </div>
 
 
+            <!-- SEARCH -->
+
             <div class="search-wrapper">
 
                 <input
@@ -183,6 +241,8 @@
             </div>
 
 
+            <!-- NOTES GRID -->
+
             <div
                 class="notes-grid"
                 id="notesGrid"
@@ -190,8 +250,11 @@
                 <!-- Notes will be rendered here later -->
             </div>
 
+
         </section>
 
+
+        <!-- ADD NOTE -->
 
         <button
             class="add-note-button"
@@ -200,17 +263,30 @@
             +
         </button>
 
+
     </main>
 
 
-    <!-- Supabase JavaScript Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <!-- Supabase Library -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
 
     <!-- Supabase Configuration -->
+
     <script src="js/supabase.js"></script>
 
+
     <!-- Notebook Application -->
+
     <script src="js/app.js"></script>
+
 
 </body>
 

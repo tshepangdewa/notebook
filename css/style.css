@@ -24,14 +24,20 @@
 ========================= */
 
 * {
+
     margin: 0;
+
     padding: 0;
+
     box-sizing: border-box;
+
 }
 
 
 html {
+
     font-size: 16px;
+
 }
 
 
@@ -48,6 +54,7 @@ body {
     background: var(--background-color);
 
     color: var(--text-color);
+
 }
 
 
@@ -56,7 +63,9 @@ body {
 ========================= */
 
 .hidden {
+
     display: none !important;
+
 }
 
 
@@ -75,6 +84,7 @@ body {
     justify-content: center;
 
     padding: 24px;
+
 }
 
 
@@ -94,6 +104,7 @@ body {
 
     box-shadow:
         0 4px 12px rgba(31, 41, 55, 0.06);
+
 }
 
 
@@ -108,6 +119,7 @@ body {
     align-items: center;
 
     gap: 10px;
+
 }
 
 
@@ -132,6 +144,7 @@ body {
     font-size: 19px;
 
     font-weight: 700;
+
 }
 
 
@@ -144,43 +157,64 @@ body {
     font-weight: 600;
 
     letter-spacing: -0.3px;
+
 }
 
-
-/* =========================
-   AUTH HEADER
-========================= */
 
 /* =========================
    AUTH HEADER
 ========================= */
 
 .auth-header {
+
     margin-top: 12px;
+
     margin-bottom: 28px;
+
     text-align: center;
+
 }
+
 
 .auth-header h1 {
+
     color: var(--text-color);
+
     margin-bottom: 4px;
+
 }
+
 
 .auth-header h1.ai-heading {
+
     font-family: "Caveat", cursive;
+
     font-size: 48px;
+
     font-weight: 700;
+
     line-height: 1;
+
     letter-spacing: 0;
+
     text-align: center;
+
 }
 
+
 .auth-header p {
+
     margin-top: 8px;
+
     color: var(--muted-color);
+
     font-size: 14px;
+
     line-height: 1.5;
+
 }
+
+
 /* =========================
    FORM
 ========================= */
@@ -188,6 +222,7 @@ body {
 .form-group {
 
     margin-bottom: 18px;
+
 }
 
 
@@ -202,6 +237,7 @@ body {
     font-size: 14px;
 
     font-weight: 500;
+
 }
 
 
@@ -228,12 +264,14 @@ body {
     transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
+
 }
 
 
 .form-group input::placeholder {
 
     color: var(--muted-color);
+
 }
 
 
@@ -243,6 +281,38 @@ body {
 
     box-shadow:
         0 0 0 3px rgba(6, 122, 91, 0.12);
+
+}
+
+
+/* =========================
+   AUTH MESSAGE
+========================= */
+
+.auth-message {
+
+    margin-top: -4px;
+
+    margin-bottom: 14px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+.auth-message.error {
+
+    color: #B42318;
+
+}
+
+
+.auth-message.success {
+
+    color: var(--primary-color);
+
 }
 
 
@@ -277,18 +347,30 @@ body {
     transition:
         background 0.15s ease,
         transform 0.1s ease;
+
 }
 
 
 .primary-button:hover {
 
     background: #056A50;
+
 }
 
 
 .primary-button:active {
 
     transform: translateY(1px);
+
+}
+
+
+.primary-button:disabled {
+
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
 }
 
 
@@ -305,6 +387,7 @@ body {
     color: var(--muted-color);
 
     font-size: 14px;
+
 }
 
 
@@ -323,12 +406,14 @@ body {
     font-weight: 600;
 
     cursor: pointer;
+
 }
 
 
 .text-button:hover {
 
     text-decoration: underline;
+
 }
 
 
@@ -339,6 +424,7 @@ body {
 .notes-page {
 
     min-height: 100vh;
+
 }
 
 
@@ -361,6 +447,7 @@ body {
     background: var(--white);
 
     border-bottom: 1px solid var(--secondary-color);
+
 }
 
 
@@ -381,12 +468,14 @@ body {
     font-size: 14px;
 
     cursor: pointer;
+
 }
 
 
 .icon-button:hover {
 
     background: var(--background-color);
+
 }
 
 
@@ -401,6 +490,7 @@ body {
     margin: 0 auto;
 
     padding: 36px 24px 100px;
+
 }
 
 
@@ -413,6 +503,7 @@ body {
     font-weight: 600;
 
     letter-spacing: -0.4px;
+
 }
 
 
@@ -423,6 +514,7 @@ body {
     color: var(--muted-color);
 
     font-size: 14px;
+
 }
 
 
@@ -433,6 +525,7 @@ body {
 .search-wrapper {
 
     margin-top: 28px;
+
 }
 
 
@@ -458,12 +551,14 @@ body {
 
     box-shadow:
         0 2px 8px rgba(31, 41, 55, 0.04);
+
 }
 
 
 .search-wrapper input:focus {
 
     border-color: var(--primary-color);
+
 }
 
 
@@ -481,6 +576,7 @@ body {
     gap: 16px;
 
     margin-top: 28px;
+
 }
 
 
@@ -498,6 +594,7 @@ body {
 
     box-shadow:
         0 2px 8px rgba(31, 41, 55, 0.05);
+
 }
 
 
@@ -539,6 +636,7 @@ body {
     transition:
         transform 0.15s ease,
         background 0.15s ease;
+
 }
 
 
@@ -547,6 +645,7 @@ body {
     background: #056A50;
 
     transform: translateY(-2px);
+
 }
 
 
@@ -559,12 +658,21 @@ body {
     .auth-card {
 
         padding: 28px 22px;
+
+    }
+
+
+    .auth-header h1.ai-heading {
+
+        font-size: 42px;
+
     }
 
 
     .topbar {
 
         padding: 12px 16px;
+
     }
 
 
@@ -572,12 +680,14 @@ body {
 
         padding:
             28px 16px 100px;
+
     }
 
 
     .notes-heading h1 {
 
         font-size: 24px;
+
     }
 
 
@@ -586,6 +696,7 @@ body {
         right: 20px;
 
         bottom: 20px;
+
     }
 
 }
