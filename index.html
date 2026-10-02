@@ -336,6 +336,54 @@
                     aria-label="Note content"
                 ></textarea>
 
+
+                <!-- =========================
+                     AI SUMMARY
+                ========================== -->
+
+                <div
+                    class="ai-summary"
+                    id="aiSummary"
+                >
+
+                    <div class="ai-summary-header">
+
+                        <div>
+                            <h3>AI Summary</h3>
+
+                            <p>
+                                Turn your note into a concise summary.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="ai-summary-button"
+                            id="summarizeButton"
+                        >
+                            Summarize with AI
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="ai-summary-result hidden"
+                        id="aiSummaryResult"
+                    >
+
+                        <p id="aiSummaryText"></p>
+
+                    </div>
+
+                    <p
+                        class="ai-summary-message hidden"
+                        id="aiSummaryMessage"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </div>
+
             </div>
 
 

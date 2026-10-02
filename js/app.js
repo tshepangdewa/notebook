@@ -55,6 +55,23 @@ const editorDoneButton = document.getElementById("editorDoneButton");
 
 
 /* =========================
+   AI ELEMENTS
+========================= */
+
+const summarizeButton =
+    document.getElementById("summarizeButton");
+
+const aiSummaryResult =
+    document.getElementById("aiSummaryResult");
+
+const aiSummaryText =
+    document.getElementById("aiSummaryText");
+
+const aiSummaryMessage =
+    document.getElementById("aiSummaryMessage");
+
+
+/* =========================
    APPLICATION STATE
 ========================= */
 
@@ -72,6 +89,8 @@ let editRevision = 0;
 let isCreatingNote = false;
 let isDeletingNote = false;
 let isClosingEditor = false;
+
+let isSummarizing = false;
 
 
 /* =========================
@@ -756,6 +775,8 @@ function openNoteEditor(note) {
     editorTitleInput.value = note.title || "";
     editorContentInput.value = note.content || "";
 
+    clearAISummary();
+
     updateEditorPinButton();
 
     setEditorStatus("Saved");
@@ -788,6 +809,8 @@ function handleEditorInput() {
 
     editRevision += 1;
     isEditorDirty = true;
+
+    clearAISummary();
 
     setEditorStatus("Unsaved changes");
 
@@ -927,6 +950,120 @@ function setEditorStatus(message) {
 
 
 /* =========================
+   AI SUMMARY
+========================= */
+
+function clearAISummary() {
+
+    aiSummaryResult.classList.add("hidden");
+
+    aiSummaryText.textContent = "";
+
+    aiSummaryMessage.classList.add("hidden");
+
+    aiSummaryMessage.textContent = "";
+
+    summarizeButton.disabled = false;
+
+    summarizeButton.textContent = "Summarize with AI";
+
+    isSummarizing = false;
+}
+
+
+function showAISummaryMessage(message) {
+
+    aiSummaryMessage.textContent = message;
+
+    aiSummaryMessage.classList.remove("hidden");
+}
+
+
+async function summarizeCurrentNote() {
+
+    if (!currentNote || isSummarizing) {
+        return;
+    }
+
+    const title = editorTitleInput.value.trim();
+    const content = editorContentInput.value.trim();
+
+    if (!content) {
+
+        showAISummaryMessage(
+            "Add some text to your note before summarizing it."
+        );
+
+        return;
+    }
+
+    isSummarizing = true;
+
+    summarizeButton.disabled = true;
+    summarizeButton.textContent = "Summarizing...";
+
+    aiSummaryResult.classList.add("hidden");
+    aiSummaryText.textContent = "";
+    aiSummaryMessage.classList.add("hidden");
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.functions.invoke(
+                "summarize-note",
+                {
+                    body: {
+                        title,
+                        content
+                    }
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data?.summary) {
+
+            throw new Error(
+                "The AI did not return a summary."
+            );
+        }
+
+        aiSummaryText.textContent = data.summary;
+
+        aiSummaryResult.classList.remove("hidden");
+
+        summarizeButton.textContent = "Summarize again";
+
+    } catch (error) {
+
+        console.error(
+            "AI summarization error:",
+            error
+        );
+
+        showAISummaryMessage(
+            "Unable to summarize this note right now. Please try again."
+        );
+
+        summarizeButton.textContent = "Try again";
+
+    } finally {
+
+        isSummarizing = false;
+        summarizeButton.disabled = false;
+    }
+}
+
+
+summarizeButton.addEventListener(
+    "click",
+    summarizeCurrentNote
+);
+
+
+/* =========================
    CLOSE EDITOR
 ========================= */
 
@@ -988,6 +1125,8 @@ function closeEditorImmediately() {
     document.body.style.overflow = "";
 
     isClosingEditor = false;
+
+    clearAISummary();
 }
 
 
@@ -1247,7 +1386,8 @@ logoutButton.addEventListener("click", async () => {
         }
     }
 
-    const { error } = await supabaseClient.auth.signOut();
+    const { error } =
+        await supabaseClient.auth.signOut();
 
     if (error) {
 
