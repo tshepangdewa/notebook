@@ -171,16 +171,49 @@
             </div>
 
 
-            <!-- Search -->
+            <!-- Search and sorting -->
 
-            <div class="search-wrapper">
+            <div class="notes-controls">
 
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="Search your notes..."
-                    aria-label="Search notes by title or content"
-                >
+                <div class="search-wrapper">
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search your notes..."
+                        aria-label="Search notes by title or content"
+                    >
+
+                </div>
+
+                <div class="sort-wrapper">
+
+                    <label for="sortSelect">
+                        Sort by
+                    </label>
+
+                    <select
+                        id="sortSelect"
+                        aria-label="Sort notes"
+                    >
+                        <option value="updated-desc">
+                            Recently updated
+                        </option>
+
+                        <option value="updated-asc">
+                            Oldest updated
+                        </option>
+
+                        <option value="title-asc">
+                            Title A–Z
+                        </option>
+
+                        <option value="title-desc">
+                            Title Z–A
+                        </option>
+                    </select>
+
+                </div>
 
             </div>
 
@@ -191,7 +224,11 @@
                 class="empty-state hidden"
                 id="emptyState"
             >
-                <div class="empty-state-icon" aria-hidden="true">
+
+                <div
+                    class="empty-state-icon"
+                    aria-hidden="true"
+                >
                     +
                 </div>
 
@@ -210,6 +247,7 @@
                 >
                     Create your first note
                 </button>
+
             </section>
 
 
@@ -221,8 +259,13 @@
             >
 
                 <div class="section-heading">
+
                     <h2>Pinned</h2>
-                    <span id="pinnedCount">0</span>
+
+                    <span id="pinnedCount">
+                        0
+                    </span>
+
                 </div>
 
                 <div
@@ -241,8 +284,15 @@
             >
 
                 <div class="section-heading">
-                    <h2 id="otherNotesHeading">Others</h2>
-                    <span id="otherNotesCount">0</span>
+
+                    <h2 id="otherNotesHeading">
+                        Others
+                    </h2>
+
+                    <span id="otherNotesCount">
+                        0
+                    </span>
+
                 </div>
 
                 <div
@@ -359,7 +409,9 @@
                     <div class="ai-summary-header">
 
                         <div>
-                            <h3>AI Summary</h3>
+                            <h3>
+                                AI Summary
+                            </h3>
 
                             <p>
                                 Turn your note into a concise summary.
