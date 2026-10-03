@@ -909,6 +909,13 @@ a:focus-visible {
     background: #056A50;
 }
 
+.editor-count {
+    margin: 8px 0 0;
+    color: var(--muted-color);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 
 /* =========================
    AI SUMMARY

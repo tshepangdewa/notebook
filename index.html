@@ -336,6 +336,16 @@
                     aria-label="Note content"
                 ></textarea>
 
+                <!-- Word and character count -->
+
+                <p
+                    class="editor-count"
+                    id="editorCount"
+                    aria-live="polite"
+                >
+                    0 words · 0 characters
+                </p>
+
 
                 <!-- =========================
                      AI SUMMARY
@@ -367,28 +377,30 @@
                     </div>
 
                     <div
-    class="ai-summary-result hidden"
-    id="aiSummaryResult"
->
-    <p id="aiSummaryText"></p>
+                        class="ai-summary-result hidden"
+                        id="aiSummaryResult"
+                    >
 
-    <button
-        type="button"
-        class="ai-copy-button"
-        id="aiCopyButton"
-    >
-        Copy summary
-    </button>
+                        <p id="aiSummaryText"></p>
 
-    <button
-    type="button"
-    class="ai-copy-button"
-    id="aiUseButton"
->
-    Use in note
-</button>
+                        <button
+                            type="button"
+                            class="ai-copy-button"
+                            id="aiCopyButton"
+                        >
+                            Copy summary
+                        </button>
 
-</div>
+                        <button
+                            type="button"
+                            class="ai-copy-button"
+                            id="aiUseButton"
+                        >
+                            Use in note
+                        </button>
+
+                    </div>
+
                     <p
                         class="ai-summary-message hidden"
                         id="aiSummaryMessage"

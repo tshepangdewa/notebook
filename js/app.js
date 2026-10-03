@@ -101,6 +101,9 @@ const editorDeleteButton =
 const editorDoneButton =
     document.getElementById("editorDoneButton");
 
+const editorCount =
+    document.getElementById("editorCount");
+
 const summarizeButton =
     document.getElementById("summarizeButton");
 
@@ -739,6 +742,39 @@ function autoResizeEditor() {
 
 
 // ==============================
+// WORD & CHARACTER COUNT
+// ==============================
+
+function updateEditorCount() {
+
+    const text =
+        editorContentInput.value;
+
+    const characters =
+        text.length;
+
+    const trimmedText =
+        text.trim();
+
+    const words =
+        trimmedText
+            ? trimmedText.split(/\s+/).length
+            : 0;
+
+    editorCount.textContent =
+        `${words} ${
+            words === 1
+                ? "word"
+                : "words"
+        } · ${characters} ${
+            characters === 1
+                ? "character"
+                : "characters"
+        }`;
+}
+
+
+// ==============================
 // OPEN NOTE EDITOR
 // ==============================
 
@@ -753,6 +789,8 @@ function openNoteEditor(note) {
         note.content || "";
 
     autoResizeEditor();
+
+    updateEditorCount();
 
     updateEditorPinButton();
 
@@ -847,6 +885,8 @@ function handleEditorInput() {
         editorContentInput.value;
 
     autoResizeEditor();
+
+    updateEditorCount();
 
     editRevision += 1;
 
@@ -1256,8 +1296,8 @@ function escapeHTML(text) {
         )
         .replace(
             /</g,
-            "&lt;"
-        )
+            "&lt;",
+            )
         .replace(
             />/g,
             "&gt;"
@@ -1540,6 +1580,8 @@ function useAISummaryInNote() {
         summary;
 
     autoResizeEditor();
+
+    updateEditorCount();
 
     editRevision += 1;
 
