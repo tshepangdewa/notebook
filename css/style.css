@@ -37,7 +37,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
     font: inherit;
 }
 
@@ -48,6 +49,7 @@ button {
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
+select:focus-visible,
 a:focus-visible {
     outline: 3px solid rgba(6, 122, 91, 0.3);
     outline-offset: 3px;
@@ -344,11 +346,19 @@ a:focus-visible {
 
 
 /* =========================
-   SEARCH
+   SEARCH + SORT CONTROLS
 ========================= */
 
-.search-wrapper {
+.notes-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-top: 30px;
+    margin-bottom: 28px;
+}
+
+.search-wrapper {
+    flex: 1;
 }
 
 .search-wrapper input {
@@ -374,6 +384,36 @@ a:focus-visible {
 .search-wrapper input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(6, 122, 91, 0.08);
+}
+
+.sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.sort-wrapper label {
+    color: var(--muted-color);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.sort-wrapper select {
+    min-height: 42px;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.sort-wrapper select:focus {
+    border-color: var(--primary-color);
 }
 
 
@@ -865,6 +905,18 @@ a:focus-visible {
 
 
 /* =========================
+   EDITOR COUNT
+========================= */
+
+.editor-count {
+    margin: 8px 0 0;
+    color: var(--muted-color);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================
    EDITOR FOOTER
 ========================= */
 
@@ -907,13 +959,6 @@ a:focus-visible {
 
 .editor-done-button:hover {
     background: #056A50;
-}
-
-.editor-count {
-    margin: 8px 0 0;
-    color: var(--muted-color);
-    font-size: 12px;
-    line-height: 1.5;
 }
 
 
@@ -1027,7 +1072,7 @@ a:focus-visible {
 
 
 /* =========================
-   RESPONSIVE DESIGN
+   MOBILE / TABLET
 ========================= */
 
 @media (max-width: 760px) {
@@ -1047,23 +1092,59 @@ a:focus-visible {
                 minmax(220px, 1fr)
             );
     }
+
+    .notes-controls {
+        gap: 10px;
+    }
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
+
+    /* AUTH */
+
+    .auth-page {
+        padding: 16px;
+    }
 
     .auth-card {
         padding: 28px 22px;
+        border-radius: 14px;
     }
 
     .auth-header h1.ai-heading {
         font-size: 42px;
     }
 
+
+    /* TOP BAR */
+
     .topbar {
         min-height: 62px;
         padding: 12px 16px;
     }
+
+    .brand-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .icon-button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+
+    /* NOTES */
 
     .notes-content {
         padding: 28px 16px 100px;
@@ -1079,9 +1160,57 @@ a:focus-visible {
         font-size: 26px;
     }
 
-    .search-wrapper {
-        margin-top: 24px;
+    .notes-heading p {
+        font-size: 13px;
     }
+
+    .note-count {
+        align-self: flex-start;
+    }
+
+
+    /* SEARCH + SORT */
+
+    .notes-controls {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+    }
+
+    .search-wrapper input {
+        width: 100%;
+        padding: 13px 14px;
+    }
+
+    .sort-wrapper {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .sort-wrapper select {
+        flex: 1;
+        max-width: 240px;
+    }
+
+
+    /* NOTE SECTIONS */
+
+    .notes-section {
+        margin-top: 28px;
+    }
+
+    .section-heading {
+        margin-bottom: 12px;
+    }
+
+
+    /* NOTE GRID */
 
     .notes-grid {
         grid-template-columns: 1fr;
@@ -1103,23 +1232,53 @@ a:focus-visible {
         line-height: 1.6;
     }
 
+
+    /* EMPTY STATE */
+
+    .empty-state {
+        margin-top: 48px;
+        padding: 20px 10px;
+    }
+
+    .empty-state h2 {
+        font-size: 19px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+    }
+
+
+    /* ADD BUTTON */
+
     .add-note-button {
         right: 20px;
         bottom: 20px;
         width: 54px;
         height: 54px;
         border-radius: 16px;
+        font-size: 29px;
     }
 
+
+    /* EDITOR */
+
     .editor-overlay {
+        align-items: stretch;
         padding: 0;
     }
 
     .note-editor {
         width: 100%;
         height: 100%;
+        max-height: none;
         border: none;
         border-radius: 0;
+    }
+
+    .editor-header {
+        min-height: 58px;
+        padding: 10px 14px;
     }
 
     .editor-body {
@@ -1132,77 +1291,140 @@ a:focus-visible {
 
     .editor-content {
         font-size: 15px;
+        line-height: 1.7;
     }
 
-    .empty-state {
-        margin-top: 48px;
-        padding: 20px 10px;
+    .editor-footer {
+        min-height: 62px;
+        padding: 10px 16px;
+    }
+
+
+    /* AI SUMMARY */
+
+    .ai-summary {
+        margin-top: 22px;
+        padding: 16px;
+        border-radius: 13px;
     }
 
     .ai-summary-header {
         flex-direction: column;
+        gap: 14px;
+    }
+
+    .ai-summary-header h3 {
+        font-size: 15px;
+    }
+
+    .ai-summary-header p {
+        font-size: 12px;
+        line-height: 1.5;
     }
 
     .ai-summary-button {
         width: 100%;
     }
+
+    .ai-summary-result {
+        padding: 14px;
+    }
+
+    .ai-summary-result p,
+    .ai-summary-result li {
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+    .ai-copy-button {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+
+    /* EDITOR ACTIONS */
+
+    .editor-action-button {
+        min-height: 36px;
+        padding: 8px 12px;
+    }
+
+    .editor-close-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .editor-status {
+        font-size: 11px;
+    }
+
+    .editor-delete-button,
+    .editor-done-button {
+        min-height: 40px;
+        padding: 9px 16px;
+    }
 }
 
-.notes-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 28px;
-}
 
-.notes-controls .search-wrapper {
-    flex: 1;
-    margin-bottom: 0;
-}
+/* =========================
+   SMALL PHONES
+========================= */
 
-.sort-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-}
+@media (max-width: 400px) {
 
-.sort-wrapper label {
-    color: var(--muted-color);
-    font-size: 13px;
-    font-weight: 500;
-}
+    .auth-card {
+        padding: 26px 18px;
+    }
 
-.sort-wrapper select {
-    min-height: 42px;
-    padding: 0 34px 0 12px;
-    border: 1px solid var(--secondary-color);
-    border-radius: 10px;
-    background: var(--white);
-    color: var(--text-color);
-    font-family: inherit;
-    font-size: 13px;
-    cursor: pointer;
-    outline: none;
-}
+    .auth-header h1.ai-heading {
+        font-size: 38px;
+    }
 
-.sort-wrapper select:focus {
-    border-color: var(--primary-color);
-}
+    .notes-content {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
 
-@media (max-width: 640px) {
-
-    .notes-controls {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 10px;
+    .notes-heading h1 {
+        font-size: 24px;
     }
 
     .sort-wrapper {
-        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sort-wrapper label {
+        font-size: 12px;
     }
 
     .sort-wrapper select {
+        max-width: none;
+        min-width: 0;
+    }
+
+    .note-card {
+        padding: 16px;
+    }
+
+    .editor-body {
+        padding: 18px 16px;
+    }
+
+    .editor-title {
+        font-size: 21px;
+    }
+
+    .editor-footer {
+        gap: 8px;
+    }
+
+    .editor-delete-button,
+    .editor-done-button {
         flex: 1;
+    }
+
+    .add-note-button {
+        right: 14px;
+        bottom: 14px;
     }
 }
