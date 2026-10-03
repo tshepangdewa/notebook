@@ -155,7 +155,8 @@ function updateAuthMode() {
 
     if (isSignUpMode) {
 
-        authTitle.textContent = "Create your account";
+        authTitle.textContent =
+            "Create your account";
 
         authSubtitle.textContent =
             "Start organizing your notes with Notebook.";
@@ -168,7 +169,8 @@ function updateAuthMode() {
 
     } else {
 
-        authTitle.textContent = "Welcome back";
+        authTitle.textContent =
+            "Welcome back";
 
         authSubtitle.textContent =
             "Sign in to continue to Notebook.";
@@ -215,9 +217,12 @@ authForm.addEventListener(
             return;
         }
 
-        authForm.querySelector(
-            "button[type='submit']"
-        ).disabled = true;
+        const submitButton =
+            authForm.querySelector(
+                "button[type='submit']"
+            );
+
+        submitButton.disabled = true;
 
         try {
 
@@ -281,9 +286,7 @@ authForm.addEventListener(
 
         } finally {
 
-            authForm.querySelector(
-                "button[type='submit']"
-            ).disabled = false;
+            submitButton.disabled = false;
         }
     }
 );
@@ -295,17 +298,25 @@ authForm.addEventListener(
 
 function showAuthPage() {
 
-    authPage.classList.remove("hidden");
+    authPage.classList.remove(
+        "hidden"
+    );
 
-    notesPage.classList.add("hidden");
+    notesPage.classList.add(
+        "hidden"
+    );
 }
 
 
 async function showNotesPage() {
 
-    authPage.classList.add("hidden");
+    authPage.classList.add(
+        "hidden"
+    );
 
-    notesPage.classList.remove("hidden");
+    notesPage.classList.remove(
+        "hidden"
+    );
 
     await loadNotes();
 }
@@ -367,7 +378,9 @@ function sortNotes(noteList) {
                 Boolean(b.is_pinned)
             ) {
 
-                return a.is_pinned ? -1 : 1;
+                return a.is_pinned
+                    ? -1
+                    : 1;
             }
 
             return (
@@ -529,7 +542,9 @@ function createNoteCard(note) {
 
     if (note.is_pinned) {
 
-        card.classList.add("pinned");
+        card.classList.add(
+            "pinned"
+        );
     }
 
     const title =
@@ -602,7 +617,11 @@ function formatNoteDate(dateValue) {
     const date =
         new Date(dateValue);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
         return "";
     }
 
@@ -641,7 +660,10 @@ async function createNote() {
         } =
             await supabaseClient.auth.getUser();
 
-        if (userError || !user) {
+        if (
+            userError ||
+            !user
+        ) {
             return;
         }
 
@@ -703,6 +725,20 @@ emptyStateCreateButton.addEventListener(
 
 
 // ==============================
+// AUTO-RESIZE EDITOR
+// ==============================
+
+function autoResizeEditor() {
+
+    editorContentInput.style.height =
+        "auto";
+
+    editorContentInput.style.height =
+        `${editorContentInput.scrollHeight}px`;
+}
+
+
+// ==============================
 // OPEN NOTE EDITOR
 // ==============================
 
@@ -716,6 +752,8 @@ function openNoteEditor(note) {
     editorContentInput.value =
         note.content || "";
 
+    autoResizeEditor();
+
     updateEditorPinButton();
 
     isEditorDirty = false;
@@ -726,13 +764,17 @@ function openNoteEditor(note) {
         "hidden"
     );
 
-    setEditorStatus("Saved");
+    setEditorStatus(
+        "Saved"
+    );
 
     clearAISummary();
 
     setTimeout(
         () => {
+
             editorTitleInput.focus();
+
         },
         50
     );
@@ -804,6 +846,8 @@ function handleEditorInput() {
     currentNote.content =
         editorContentInput.value;
 
+    autoResizeEditor();
+
     editRevision += 1;
 
     isEditorDirty = true;
@@ -818,7 +862,9 @@ function handleEditorInput() {
 
     saveTimer = setTimeout(
         () => {
+
             saveCurrentNote();
+
         },
         700
     );
@@ -894,7 +940,10 @@ async function saveCurrentNote() {
         const {
             data,
             error
-        } = await savePromise.select().single();
+        } =
+            await savePromise
+                .select()
+                .single();
 
         if (error) {
             throw error;
@@ -903,10 +952,13 @@ async function saveCurrentNote() {
         const noteIndex =
             notes.findIndex(
                 (note) =>
-                    note.id === noteId
+                    note.id ===
+                    noteId
             );
 
-        if (noteIndex !== -1) {
+        if (
+            noteIndex !== -1
+        ) {
 
             notes[noteIndex] =
                 data;
@@ -1003,7 +1055,9 @@ async function togglePin() {
                     currentNote.id
             );
 
-        if (noteIndex !== -1) {
+        if (
+            noteIndex !== -1
+        ) {
 
             notes[noteIndex] =
                 data;
@@ -1150,7 +1204,8 @@ function clearAISummary() {
         "hidden"
     );
 
-    aiSummaryText.innerHTML = "";
+    aiSummaryText.innerHTML =
+        "";
 
     aiSummaryMessage.classList.add(
         "hidden"
@@ -1218,7 +1273,9 @@ function escapeHTML(text) {
 }
 
 
-function formatAISummary(summary) {
+function formatAISummary(
+    summary
+) {
 
     const lines =
         summary
@@ -1482,6 +1539,8 @@ function useAISummaryInNote() {
     currentNote.content =
         summary;
 
+    autoResizeEditor();
+
     editRevision += 1;
 
     isEditorDirty = true;
@@ -1496,7 +1555,9 @@ function useAISummaryInNote() {
 
     saveTimer = setTimeout(
         () => {
+
             saveCurrentNote();
+
         },
         700
     );
