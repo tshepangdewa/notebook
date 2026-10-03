@@ -171,7 +171,9 @@ a:focus-visible {
     font-family: inherit;
     font-size: 15px;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .form-group input::placeholder {
@@ -215,7 +217,9 @@ a:focus-visible {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease;
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
 }
 
 .primary-button:hover {
@@ -285,11 +289,14 @@ a:focus-visible {
     font-family: inherit;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .icon-button:hover {
     background: var(--background-color);
+    border-color: #C9C9C9;
 }
 
 
@@ -355,7 +362,9 @@ a:focus-visible {
     font-size: 15px;
     outline: none;
     box-shadow: 0 2px 8px rgba(31, 41, 55, 0.04);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .search-wrapper input::placeholder {
@@ -407,7 +416,10 @@ a:focus-visible {
 
 .notes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(245px, 1fr)
+    );
     align-items: stretch;
     gap: 16px;
 }
@@ -422,30 +434,47 @@ a:focus-visible {
     min-height: 190px;
     display: flex;
     flex-direction: column;
-    padding: 18px;
+    padding: 19px;
     background: var(--white);
     border: 1px solid var(--secondary-color);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.035);
+    border-radius: 14px;
+    box-shadow:
+        0 2px 8px rgba(31, 41, 55, 0.035);
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    overflow: hidden;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
 }
 
 .note-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 18px rgba(31, 41, 55, 0.07);
+    transform: translateY(-3px);
+    border-color: #CFCFCF;
+    box-shadow:
+        0 10px 24px rgba(31, 41, 55, 0.08);
+}
+
+.note-card:active {
+    transform: translateY(-1px);
 }
 
 .note-card.pinned {
-    border-color: rgba(6, 122, 91, 0.55);
+    border-color: rgba(6, 122, 91, 0.45);
+    box-shadow:
+        0 3px 10px rgba(6, 122, 91, 0.06);
 }
 
-.note-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
+.note-card.pinned:hover {
+    border-color: rgba(6, 122, 91, 0.65);
+    box-shadow:
+        0 10px 24px rgba(6, 122, 91, 0.10);
 }
+
+
+/* =========================
+   NOTE CARD TITLE
+========================= */
 
 .note-card h3 {
     min-width: 0;
@@ -454,14 +483,16 @@ a:focus-visible {
     font-weight: 600;
     line-height: 1.45;
     overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
-.note-pin-indicator {
-    flex-shrink: 0;
-    color: var(--primary-color);
-    font-size: 12px;
-    font-weight: 600;
-}
+
+/* =========================
+   NOTE CARD CONTENT
+========================= */
 
 .note-card > p {
     margin-top: 11px;
@@ -471,10 +502,15 @@ a:focus-visible {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
     overflow: hidden;
 }
+
+
+/* =========================
+   NOTE CARD FOOTER
+========================= */
 
 .note-card-footer {
     display: flex;
@@ -484,10 +520,40 @@ a:focus-visible {
     padding-top: 18px;
 }
 
+.note-card-date {
+    color: var(--muted-color);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================
+   LEGACY NOTE TIMESTAMP
+========================= */
+
 .note-timestamp {
     color: var(--muted-color);
     font-size: 11px;
     line-height: 1.4;
+}
+
+
+/* =========================
+   NOTE CARD HEADER
+========================= */
+
+.note-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.note-pin-indicator {
+    flex-shrink: 0;
+    color: var(--primary-color);
+    font-size: 12px;
+    font-weight: 600;
 }
 
 
@@ -510,11 +576,14 @@ a:focus-visible {
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease;
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .note-action-button:hover {
     background: var(--background-color);
+    border-color: #C9C9C9;
 }
 
 .note-action-button.delete {
@@ -625,13 +694,23 @@ a:focus-visible {
     font-weight: 300;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 5px 16px rgba(6, 122, 91, 0.22);
-    transition: transform 0.15s ease, background 0.15s ease;
+    box-shadow:
+        0 5px 16px rgba(6, 122, 91, 0.22);
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .add-note-button:hover {
     background: #056A50;
     transform: translateY(-2px);
+    box-shadow:
+        0 8px 20px rgba(6, 122, 91, 0.26);
+}
+
+.add-note-button:active {
+    transform: translateY(0);
 }
 
 .add-note-button:disabled {
@@ -670,7 +749,8 @@ a:focus-visible {
     background: var(--white);
     border: 1px solid var(--secondary-color);
     border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(31, 41, 55, 0.18);
+    box-shadow:
+        0 20px 50px rgba(31, 41, 55, 0.18);
 }
 
 
@@ -831,102 +911,6 @@ a:focus-visible {
 
 
 /* =========================
-   RESPONSIVE DESIGN
-========================= */
-
-@media (max-width: 760px) {
-    .topbar {
-        padding: 12px 20px;
-    }
-
-    .notes-content {
-        padding: 32px 20px 100px;
-    }
-
-    .notes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-}
-
-@media (max-width: 600px) {
-    .auth-card {
-        padding: 28px 22px;
-    }
-
-    .auth-header h1.ai-heading {
-        font-size: 42px;
-    }
-
-    .topbar {
-        min-height: 62px;
-        padding: 12px 16px;
-    }
-
-    .notes-content {
-        padding: 28px 16px 100px;
-    }
-
-    .notes-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .notes-heading h1 {
-        font-size: 26px;
-    }
-
-    .search-wrapper {
-        margin-top: 24px;
-    }
-
-    .notes-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .note-card {
-        min-height: 160px;
-    }
-
-    .add-note-button {
-        right: 20px;
-        bottom: 20px;
-        width: 54px;
-        height: 54px;
-        border-radius: 16px;
-    }
-
-    .editor-overlay {
-        padding: 0;
-    }
-
-    .note-editor {
-        width: 100%;
-        height: 100%;
-        border: none;
-        border-radius: 0;
-    }
-
-    .editor-body {
-        padding: 22px 18px;
-    }
-
-    .editor-title {
-        font-size: 24px;
-    }
-
-    .editor-content {
-        font-size: 15px;
-    }
-
-    .empty-state {
-        margin-top: 48px;
-        padding: 20px 10px;
-    }
-}
-
-/* =========================
    AI SUMMARY
 ========================= */
 
@@ -993,24 +977,28 @@ a:focus-visible {
     color: var(--text-color);
     font-size: 14px;
     line-height: 1.7;
-    white-space: pre-wrap;
+}
+
+.ai-summary-result ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.ai-summary-result li {
+    margin-bottom: 7px;
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.ai-summary-result li:last-child {
+    margin-bottom: 0;
 }
 
 .ai-summary-message {
     margin: 12px 0 0;
     color: var(--muted-color);
     font-size: 13px;
-}
-
-@media (max-width: 600px) {
-
-    .ai-summary-header {
-        flex-direction: column;
-    }
-
-    .ai-summary-button {
-        width: 100%;
-    }
 }
 
 .ai-copy-button {
@@ -1028,4 +1016,127 @@ a:focus-visible {
 
 .ai-copy-button:hover {
     background: var(--background-color);
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 760px) {
+
+    .topbar {
+        padding: 12px 20px;
+    }
+
+    .notes-content {
+        padding: 32px 20px 100px;
+    }
+
+    .notes-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(220px, 1fr)
+            );
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .auth-card {
+        padding: 28px 22px;
+    }
+
+    .auth-header h1.ai-heading {
+        font-size: 42px;
+    }
+
+    .topbar {
+        min-height: 62px;
+        padding: 12px 16px;
+    }
+
+    .notes-content {
+        padding: 28px 16px 100px;
+    }
+
+    .notes-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .notes-heading h1 {
+        font-size: 26px;
+    }
+
+    .search-wrapper {
+        margin-top: 24px;
+    }
+
+    .notes-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .note-card {
+        min-height: 160px;
+        padding: 17px;
+        border-radius: 13px;
+    }
+
+    .note-card h3 {
+        font-size: 15px;
+    }
+
+    .note-card > p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .add-note-button {
+        right: 20px;
+        bottom: 20px;
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+    }
+
+    .editor-overlay {
+        padding: 0;
+    }
+
+    .note-editor {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+    }
+
+    .editor-body {
+        padding: 22px 18px;
+    }
+
+    .editor-title {
+        font-size: 24px;
+    }
+
+    .editor-content {
+        font-size: 15px;
+    }
+
+    .empty-state {
+        margin-top: 48px;
+        padding: 20px 10px;
+    }
+
+    .ai-summary-header {
+        flex-direction: column;
+    }
+
+    .ai-summary-button {
+        width: 100%;
+    }
 }
