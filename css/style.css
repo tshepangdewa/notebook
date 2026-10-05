@@ -829,26 +829,31 @@ a:focus-visible {
     color: var(--muted-color);
     font-size: 12px;
 }
-
 .editor-action-button {
-    padding: 8px 13px;
-    border: 1px solid var(--secondary-color);
+    padding: 9px 16px;
+    border: none;
     border-radius: 8px;
-    background: var(--white);
-    color: var(--text-color);
+    background: var(--primary-color);
+    color: var(--white);
     font-family: inherit;
     font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .editor-action-button:hover {
-    background: var(--background-color);
+    background: #056A50;
 }
 
 .editor-action-button.active {
-    border-color: var(--primary-color);
-    background: rgba(6, 122, 91, 0.08);
-    color: var(--primary-color);
+    border: none;
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.editor-action-button.active:hover {
+    background: #056A50;
 }
 
 
