@@ -1648,3 +1648,17 @@ a:focus-visible {
     margin-top: auto;
     padding-top: 40px;
 }
+
+
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-page .site-footer {
+    align-self: stretch;
+    margin-top: auto;
+    padding-top: 40px;
+}
