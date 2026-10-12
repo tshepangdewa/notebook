@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#F7F9F8"
+    >
+
+    <title>Notebook</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/notebook-logo.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Geist:wght@100..900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         AUTHENTICATION PAGE
+    ========================== -->
+
+    <main class="auth-page" id="authPage">
+
+        <section class="auth-card">
+
+            <div class="brand">
+                <img
+    src="assets/notebook-logo.svg"
+    alt=""
+    class="brand-icon"
+>
+                <span class="brand-name">Notebook</span>
+            </div>
+
+            <div class="auth-header">
+                <h1 id="authTitle" class="ai-heading">
+                    Your notes, understood by AI
+                </h1>
+
+                <p id="authSubtitle">
+                    Sign in to access your notes.
+                </p>
+            </div>
+
+            <form id="authForm">
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <p
+                    id="authMessage"
+                    class="auth-message hidden"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Sign in
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                <span id="authSwitchText">
+                    Don't have an account?
+                </span>
+
+                <button
+                    type="button"
+                    id="authSwitchButton"
+                    class="text-button"
+                >
+                    Sign up
+                </button>
+            </p>
+
+        </section>
+
+        <!-- Authentication page footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-name">Tshepang Dewa</span>
+                    <p class="footer-tagline">Building useful digital experiences.</p>
+                    <p class="footer-copyright">
+                        &copy; 2026 Tshepang Dewa. All rights reserved.
+                    </p>
+                </div>
+
+                <div class="footer-social">
+                    <h2>Social</h2>
+                    <div class="footer-social-links">
+                        <a
+                            href="https://github.com/your-username"
+                            class="footer-social-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img src="public/icons/github.svg" alt="" class="footer-social-icon">
+                            <span>GitHub</span>
+                        </a>
+
+                        <a
+                            href="YOUR_INSTAGRAM_URL"
+                            class="footer-social-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img src="public/icons/instagram.svg" alt="" class="footer-social-icon">
+                            <span>Instagram</span>
+                        </a>
+
+                        <a
+                            href="YOUR_LINKEDIN_URL"
+                            class="footer-social-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img src="public/icons/linkedin.svg" alt="" class="footer-social-icon">
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+
+    <!-- =========================
+         NOTES PAGE
+    ========================== -->
+
+    <main class="notes-page hidden" id="notesPage">
+
+        <!-- Top navigation -->
+
+        <header class="topbar">
+
+            <a
+                href="#"
+                class="brand brand-link"
+                id="homeButton"
+                aria-label="Notebook home"
+            >
+              <img
+    src="assets/notebook-logo.svg"
+    alt=""
+    class="brand-icon"
+>
+                <span class="brand-name">Notebook</span>
+            </a>
+
+            <button
+                type="button"
+                class="icon-button"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </header>
+
+
+        <!-- Main notes area -->
+
+        <section class="notes-content">
+
+            <div class="notes-heading">
+
+                <div>
+                    <h1>Your Notes</h1>
+
+                    <p>
+                        Capture your thoughts and let AI make sense of them.
+                    </p>
+                </div>
+
+                <span
+                    class="note-count"
+                    id="noteCount"
+                    aria-live="polite"
+                >
+                    0 notes
+                </span>
+
+            </div>
+
+
+            <!-- Search and sorting -->
+
+            <div class="notes-controls">
+
+                <div class="search-wrapper">
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search your notes..."
+                        aria-label="Search notes by title or content"
+                    >
+
+                </div>
+
+                <div class="sort-wrapper">
+
+                    <label for="sortSelect">
+                        Sort by
+                    </label>
+
+                    <select
+                        id="sortSelect"
+                        aria-label="Sort notes"
+                    >
+                        <option value="updated-desc">
+                            Recently updated
+                        </option>
+
+                        <option value="updated-asc">
+                            Oldest updated
+                        </option>
+
+                        <option value="title-asc">
+                            Title A–Z
+                        </option>
+
+                        <option value="title-desc">
+                            Title Z–A
+                        </option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Global empty state -->
+
+            <section
+                class="empty-state hidden"
+                id="emptyState"
+            >
+
+                <div
+                    class="empty-state-icon"
+                    aria-hidden="true"
+                >
+                    +
+                </div>
+
+                <h2 id="emptyStateTitle">
+                    Your space for ideas
+                </h2>
+
+                <p id="emptyStateDescription">
+                    Create your first note and keep your thoughts in one place.
+                </p>
+
+                <button
+                    type="button"
+                    class="empty-state-button"
+                    id="emptyStateCreateButton"
+                >
+                    Create your first note
+                </button>
+
+            </section>
+
+
+            <!-- Pinned notes -->
+
+            <section
+                class="notes-section hidden"
+                id="pinnedSection"
+            >
+<div class="section-heading">
+    <h2 class="section-title-with-icon">
+        <img src="assets/pin.svg" alt="" class="section-title-icon">
+        <span>Pinned</span>
+    </h2>
+    <span id="pinnedCount">0</span>
+</div>
+                <div
+                    class="notes-grid"
+                    id="pinnedGrid"
+                ></div>
+
+            </section>
+
+
+            <!-- Regular notes -->
+
+            <section
+                class="notes-section hidden"
+                id="otherNotesSection"
+            >
+
+                <div class="section-heading">
+
+                    <h2 id="otherNotesHeading">
+                        Others
+                    </h2>
+
+                    <span id="otherNotesCount">
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    class="notes-grid"
+                    id="notesGrid"
+                ></div>
+
+            </section>
+
+        </section>
+
+
+        <!-- Floating add button -->
+
+        <button
+            type="button"
+            class="add-note-button"
+            id="addNoteButton"
+            aria-label="Create a new note"
+            title="Create a new note"
+        >
+            +
+        </button>
+
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <a href="#" class="footer-name">Tshepang Dewa</a>
+            <p class="footer-tagline">Building useful digital experiences.</p>
+            <p class="footer-copyright">
+                &copy; 2026 Tshepang Dewa. All rights reserved.
+            </p>
+        </div>
+
+        <div class="footer-social">
+            <h2>Social</h2>
+
+            <div class="footer-social-links">
+                <a
+                    href="https://github.com/your-username"
+                    class="footer-social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img src="public/icons/github.svg" alt="" class="footer-social-icon">
+                    <span>GitHub</span>
+                </a>
+
+                <a
+                    href="YOUR_INSTAGRAM_URL"
+                    class="footer-social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img src="public/icons/instagram.svg" alt="" class="footer-social-icon">
+                    <span>Instagram</span>
+                </a>
+
+                <a
+                    href="YOUR_LINKEDIN_URL"
+                    class="footer-social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img src="public/icons/linkedin.svg" alt="" class="footer-social-icon">
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    </main>
+
+
+    <!-- =========================
+         NOTE EDITOR
+    ========================== -->
+
+    <div
+        class="editor-overlay hidden"
+        id="editorOverlay"
+    >
+
+        <section
+            class="note-editor"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="editorTitleInput"
+        >
+
+            <div class="editor-header">
+
+                <button
+                    type="button"
+                    class="editor-close-button"
+                    id="closeEditorButton"
+                    aria-label="Close note"
+                >
+                    ×
+                </button>
+
+                <div
+                    class="editor-status"
+                    id="editorStatus"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Saved
+                </div>
+
+                <button
+                    type="button"
+                    class="editor-action-button"
+                    id="editorPinButton"
+                >
+                    Pin
+                </button>
+
+            </div>
+
+
+            <div class="editor-body">
+
+                <input
+                    type="text"
+                    id="editorTitleInput"
+                    class="editor-title"
+                    placeholder="Title"
+                    maxlength="200"
+                    autocomplete="off"
+                    aria-label="Note title"
+                >
+
+                <textarea
+                    id="editorContentInput"
+                    class="editor-content"
+                    placeholder="Start writing..."
+                    aria-label="Note content"
+                ></textarea>
+
+                <!-- Word and character count -->
+
+                <p
+                    class="editor-count"
+                    id="editorCount"
+                    aria-live="polite"
+                >
+                    0 words · 0 characters
+                </p>
+
+
+                <!-- =========================
+                     AI SUMMARY
+                ========================== -->
+
+                <div
+                    class="ai-summary"
+                    id="aiSummary"
+                >
+
+                    <div class="ai-summary-header">
+
+                        <div>
+                            <h3>
+                                AI Summary
+                            </h3>
+
+                            <p>
+                                Turn your note into a concise summary.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="ai-summary-button"
+                            id="summarizeButton"
+                        >
+                            Summarize with AI
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="ai-summary-result hidden"
+                        id="aiSummaryResult"
+                    >
+
+                        <p id="aiSummaryText"></p>
+
+                        <button
+                            type="button"
+                            class="ai-copy-button"
+                            id="aiCopyButton"
+                        >
+                            Copy summary
+                        </button>
+
+                        <button
+                            type="button"
+                            class="ai-copy-button"
+                            id="aiUseButton"
+                        >
+                            Use in note
+                        </button>
+
+                    </div>
+
+                    <p
+                        class="ai-summary-message hidden"
+                        id="aiSummaryMessage"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </div>
+
+            </div>
+
+
+            <div class="editor-footer">
+
+                <button
+                    type="button"
+                    class="editor-delete-button"
+                    id="editorDeleteButton"
+                >
+                    Delete
+                </button>
+
+                <button
+                    type="button"
+                    class="editor-done-button"
+                    id="editorDoneButton"
+                >
+                    Done
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
